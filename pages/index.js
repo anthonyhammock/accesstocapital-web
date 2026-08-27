@@ -10,7 +10,7 @@ export default function Home() {
       
       <main className="max-w-4xl mx-auto px-6 py-24">
         <h2 className="text-4xl font-bold text-navy mb-6">
-          Access to Capital, On Your Terms
+          Access to Capital | Your Personal Business and Consumer Credit Builder
         </h2>
         <p className="text-lg text-neutral mb-12">
           Build your credit profile through transparent financial reporting.
