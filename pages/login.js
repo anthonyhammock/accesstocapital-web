@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { AvatarLogo } from '@/components/LogoComponent'
+import Link from 'next/link'
 
 export default function Login() {
   return (
