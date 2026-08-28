@@ -1,9 +1,25 @@
 export default function Home() {
   return (
     <div className="min-h-screen bg-off-white">
-      <nav className="bg-white border-b border-light-gray">
-        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-navy">Access to Capital</h1>
+     import Link from 'next/link'
+import { HeaderLogo } from '@/components/LogoComponent'
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-offwhite">
+      {/* Header */}
+      <header className="bg-white border-b border-lightgray">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <HeaderLogo size="md" />
+          <nav className="flex gap-8">
+            <Link href="/login" className="text-navy hover:text-gold transition-colors">
+              Sign In
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* Rest of page stays the same... */}
           <a href="/login" className="text-navy hover:text-gold">Sign In</a>
         </div>
       </nav>
