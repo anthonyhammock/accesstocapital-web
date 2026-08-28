@@ -1,6 +1,5 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-off-white">
      import Link from 'next/link'
 import { HeaderLogo } from '@/components/LogoComponent'
 
