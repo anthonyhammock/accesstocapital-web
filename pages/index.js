@@ -1,6 +1,4 @@
-export default function Home() {
-  return (
-     import Link from 'next/link'
+import Link from 'next/link'
 import { HeaderLogo } from '@/components/LogoComponent'
 
 export default function Home() {
@@ -17,11 +15,6 @@ export default function Home() {
           </nav>
         </div>
       </header>
-
-      {/* Rest of page stays the same... */}
-          <a href="/login" className="text-navy hover:text-gold">Sign In</a>
-        </div>
-      </nav>
       
       <main className="max-w-4xl mx-auto px-6 py-24">
         <h2 className="text-4xl font-bold text-navy mb-6">
