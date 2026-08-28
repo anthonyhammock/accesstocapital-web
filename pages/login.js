@@ -1,10 +1,20 @@
 import Link from 'next/link'
+import { AvatarLogo } from '@/components/LogoComponent'
 
 export default function Login() {
   return (
-    <div className="min-h-screen bg-off-white flex items-center justify-center">
-      <div className="bg-white border border-light-gray rounded-md p-12 max-w-md w-full">
-        <h1 className="text-3xl font-bold text-navy mb-8 text-center">Welcome Back</h1>
+    <div className="min-h-screen bg-offwhite flex flex-col">
+      {/* Header */}
+      <header className="bg-white border-b border-lightgray">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <AvatarLogo size="sm" />
+            <span className="font-garamond font-bold text-navy text-lg">Access to Capital</span>
+          </Link>
+        </div>
+      </header>
+
+      {/* Rest of page stays the same... */}
         
         <form className="space-y-6">
           <input
