@@ -20,7 +20,7 @@ const fullSizeMap = {
   xl: 'w-96',
 };
 
-export const AccessToCapitalLogo: React.FC<LogoProps> = ({
+export const AccessToCapitalLogo = ({
   variant = 'full',
   size = 'md',
   className = '',
@@ -187,11 +187,11 @@ export const AccessToCapitalLogo: React.FC<LogoProps> = ({
 };
 
 // Export convenience components
-export const HeaderLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
+export const HeaderLogo = ({ className = '' }) => {
   return <AccessToCapitalLogo variant="full" size="md" className={className} />;
 };
 
-export const AvatarLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
+export const AvatarLogo = ({ className = '' }) => {
   return <AccessToCapitalLogo variant="icon" size="md" className={className} />;
 };
 
