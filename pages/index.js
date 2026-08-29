@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { HeaderLogo } from '@/components/LogoComponent'
+import { HeaderLogo } from '../src/components/LogoComponent'
 
 export default function Home() {
   return (
