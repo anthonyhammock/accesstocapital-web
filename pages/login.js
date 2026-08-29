@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { AvatarLogo } from '@/components/LogoComponent'
+import { AvatarLogo } from '../src/components/LogoComponent'
 
 export default function Login() {
   return (
@@ -55,7 +55,7 @@ export default function Login() {
             {/* Divider */}
             <hr className="my-8" />
 
-            {/* Sign up link - FIXED with curly braces to handle apostrophe */}
+            {/* Sign up link - FIXED: Using double quotes for outer string */}
             <p className="font-inter text-center text-navy">
               {"Don't have an account? "}
               <Link href="/register" className="text-gold font-medium hover:underline">
