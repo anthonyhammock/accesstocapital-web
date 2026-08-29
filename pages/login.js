@@ -9,7 +9,7 @@ export default function Login() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <AvatarLogo size="sm" />
-            <span className="font-garamond font-medium text-navy text-lg">Access to Capital</span>
+            <span className="font-garamond font-bold text-navy text-lg">Access to Capital</span>
           </Link>
         </div>
       </header>
@@ -17,13 +17,11 @@ export default function Login() {
       {/* Login Form */}
       <main className="flex-1 flex items-center justify-center py-12">
         <div className="w-full max-w-md">
-          {/* Card with luxury styling */}
           <div className="bg-white border border-lightgray rounded-lg p-12">
             <h1 className="font-garamond text-3xl font-medium text-navy mb-2">Welcome Back</h1>
             <p className="font-inter text-gray-600 mb-8">Sign in to your account</p>
 
             <form className="space-y-6">
-              {/* Email field */}
               <div>
                 <label className="font-inter text-sm font-medium text-navy block mb-2">
                   Email Address
@@ -31,11 +29,10 @@ export default function Login() {
                 <input
                   type="email"
                   placeholder="you@example.com"
-                  className="w-full"
+                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
                 />
               </div>
 
-              {/* Password field */}
               <div>
                 <label className="font-inter text-sm font-medium text-navy block mb-2">
                   Password
@@ -43,11 +40,10 @@ export default function Login() {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full"
+                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
                 />
               </div>
 
-              {/* Sign in button */}
               <button
                 type="submit"
                 className="w-full btn-primary text-center"
@@ -59,9 +55,9 @@ export default function Login() {
             {/* Divider */}
             <hr className="my-8" />
 
-            {/* Sign up link */}
+            {/* Sign up link - FIXED with curly braces to handle apostrophe */}
             <p className="font-inter text-center text-navy">
-              Don't have an account?{' '}
+              {"Don't have an account? "}
               <Link href="/register" className="text-gold font-medium hover:underline">
                 Create one
               </Link>
