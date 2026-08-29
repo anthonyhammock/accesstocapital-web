@@ -1,11 +1,5 @@
 import React from 'react';
 
-interface LogoProps {
-  variant?: 'full' | 'icon' | 'monochrome' | 'reversed';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  className?: string;
-}
-
 const sizeMap = {
   sm: 'w-8 h-8',
   md: 'w-12 h-12',
