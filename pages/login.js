@@ -45,7 +45,7 @@ export default function Login() {
 
       // Save user to localStorage and go to the accounts dashboard
       localStorage.setItem('user', JSON.stringify(data.user))
-      window.location.href = '/accounts'
+      window.location.href = '/dashboard'
 
     } catch (err) {
       setError('Network error. Please try again.')
