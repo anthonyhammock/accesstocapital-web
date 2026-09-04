@@ -9,7 +9,8 @@ export default function Register() {
     confirmPassword: '',
     first_name: '',
     last_name: '',
-    account_type: 'consumer'
+    account_type: 'consumer',
+    business_name: ''
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -44,6 +45,12 @@ export default function Register() {
       return
     }
 
+    if (formData.account_type !== 'consumer' && !formData.business_name.trim()) {
+      setError('Business name is required for a business account')
+      setLoading(false)
+      return
+    }
+
     try {
       // Send to backend
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
@@ -56,7 +63,8 @@ export default function Register() {
           password: formData.password,
           first_name: formData.first_name,
           last_name: formData.last_name,
-          account_type: formData.account_type
+          account_type: formData.account_type,
+          business_name: formData.account_type !== 'consumer' ? formData.business_name : undefined
         })
       })
 
@@ -176,10 +184,29 @@ export default function Register() {
                   onChange={handleChange}
                   className="w-full"
                 >
-                  <option value="consumer">Consumer (Personal Credit)</option>
-                  <option value="business">Business (Business Credit)</option>
+                  <option value="consumer">Consumer (Personal Credit) — $10/mo</option>
+                  <option value="business">Business (Business Credit) — $50/mo</option>
+                  <option value="both">Consumer + Business — $60/mo</option>
                 </select>
               </div>
+
+              {/* Business Name (business or both) */}
+              {formData.account_type !== 'consumer' && (
+                <div>
+                  <label className="font-inter text-sm font-medium text-navy block mb-2">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    name="business_name"
+                    value={formData.business_name}
+                    onChange={handleChange}
+                    placeholder="Your Business LLC"
+                    className="w-full"
+                    required
+                  />
+                </div>
+              )}
 
               {/* Password */}
               <div>
