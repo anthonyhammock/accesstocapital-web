@@ -14,6 +14,13 @@ const fullSizeMap = {
   xl: 'w-96',
 };
 
+const fullIconSizeMap = {
+  sm: 'w-8 h-8',
+  md: 'w-16 h-16 md:w-20 md:h-20',
+  lg: 'w-20 h-20 md:w-24 md:h-24',
+  xl: 'w-28 h-28 md:w-32 md:h-32',
+};
+
 export const AccessToCapitalLogo = ({
   variant = 'full',
   size = 'md',
@@ -26,7 +33,7 @@ export const AccessToCapitalLogo = ({
         <svg
           viewBox="0 0 130 130"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0"
+          className={`${fullIconSizeMap[size]} flex-shrink-0`}
         >
           <rect x="0" y="15" width="12" height="110" fill="#1a1f36" />
           <rect x="118" y="15" width="12" height="110" fill="#1a1f36" />
@@ -181,8 +188,8 @@ export const AccessToCapitalLogo = ({
 };
 
 // Export convenience components
-export const HeaderLogo = ({ className = '' }) => {
-  return <AccessToCapitalLogo variant="full" size="md" className={className} />;
+export const HeaderLogo = ({ size = 'sm', className = '' }) => {
+  return <AccessToCapitalLogo variant="full" size={size} className={className} />;
 };
 
 export const AvatarLogo = ({ className = '' }) => {

@@ -6,7 +6,7 @@ export default function Home() {
     <div className="min-h-screen bg-offwhite">
       {/* Header */}
       <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <HeaderLogo size="md" />
           <nav className="flex gap-8">
             <Link href="/login" className="text-navy hover:text-gold transition-colors">

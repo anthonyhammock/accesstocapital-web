@@ -94,7 +94,7 @@ export default function Accounts() {
     <div className="min-h-screen bg-offwhite">
       {/* Header */}
       <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <AvatarLogo size="sm" />
             <span className="font-garamond text-navy font-medium">Access to Capital</span>
@@ -180,7 +180,7 @@ export default function Accounts() {
           </div>
 
           {showAddBusiness && (
-            <form onSubmit={handleAddBusiness} className="bg-white border border-lightgray rounded-lg p-8 mb-8 space-y-6">
+            <form onSubmit={handleAddBusiness} className="bg-white border border-lightgray p-8 mb-8 space-y-6">
               <p className="font-inter text-sm text-gray-600">
                 Each additional business is <strong>$50/month</strong>, reported to the business credit bureaus.
                 Billing isn't set up yet, so this business will be added now and billing will begin once payment
@@ -238,7 +238,7 @@ export default function Accounts() {
               </div>
 
               {addBusinessError && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-sm">
                   {addBusinessError}
                 </div>
               )}
@@ -258,7 +258,7 @@ export default function Accounts() {
           ) : (
             <div className="space-y-8">
               {businesses.map(business => (
-                <div key={business.business_group_id || business.business_name} className="bg-white border border-lightgray rounded-lg p-8">
+                <div key={business.business_group_id || business.business_name} className="bg-white border border-lightgray p-8">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="font-garamond text-xl text-navy font-bold">

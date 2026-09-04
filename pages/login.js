@@ -58,7 +58,7 @@ export default function Login() {
     <div className="min-h-screen bg-offwhite flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <AvatarLogo size="sm" />
             <span className="font-garamond font-bold text-navy text-lg">Access to Capital</span>
@@ -69,12 +69,12 @@ export default function Login() {
       {/* Login Form */}
       <main className="flex-1 flex items-center justify-center py-12">
         <div className="w-full max-w-md">
-          <div className="bg-white border border-lightgray rounded-lg p-12">
+          <div className="bg-white border border-lightgray p-12">
             <h1 className="font-garamond text-3xl font-medium text-navy mb-2">Welcome Back</h1>
             <p className="font-inter text-gray-600 mb-8">Sign in to your account</p>
 
             {error && (
-              <div className="bg-error bg-opacity-10 border border-error text-error px-4 py-3 rounded mb-6">
+              <div className="bg-error bg-opacity-10 border border-error text-error px-4 py-3 mb-6">
                 {error}
               </div>
             )}
@@ -90,7 +90,7 @@ export default function Login() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="you@example.com"
-                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                   required
                 />
               </div>
@@ -105,7 +105,7 @@ export default function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                   required
                 />
               </div>

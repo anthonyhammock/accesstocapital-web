@@ -1,5 +1,9 @@
 /* ===== CARTIER AESTHETIC DESIGN SYSTEM ===== */
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Root font settings */
 html {
   scroll-behavior: smooth;
@@ -82,45 +86,45 @@ small, .text-sm {
 
 button {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.03em;
-  transition: all 0.15s ease;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.35s ease;
   cursor: pointer;
   border: none;
-  border-radius: 4px;
-  padding: 12px 24px;
+  border-radius: 0;
+  padding: 14px 28px;
 }
 
-/* Gold button (primary CTA) */
+/* Primary CTA: solid navy, gold appears only as a thin accent line on hover.
+   Gold as a fill/glow read as a promo button, not a boutique one. */
 .btn-primary {
-  background-color: #d4af37;
-  color: #1a1f36;
-  font-weight: 600;
+  background-color: #1a1f36;
+  color: #f8f7f2;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
 }
 
 .btn-primary:hover {
-  background-color: #c9a82e;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+  background-color: #10131f;
+  border-bottom: 1px solid #d4af37;
 }
 
 .btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.1);
+  background-color: #1a1f36;
 }
 
 /* Navy button (secondary) */
 .btn-secondary {
   background-color: transparent;
   color: #1a1f36;
-  border: 2px solid #1a1f36;
+  border: 1px solid #1a1f36;
 }
 
 .btn-secondary:hover {
   background-color: #1a1f36;
   color: #f8f7f2;
-  transform: translateY(-1px);
 }
 
 /* ===== LINKS ===== */
@@ -161,10 +165,10 @@ select {
   font-size: 16px;
   padding: 12px 16px;
   border: 1px solid #e8e6e0;
-  border-radius: 4px;
+  border-radius: 0;
   background-color: #ffffff;
   color: #1a1f36;
-  transition: all 0.15s ease;
+  transition: border-color 0.35s ease;
 }
 
 input:focus,
@@ -172,7 +176,6 @@ textarea:focus,
 select:focus {
   outline: none;
   border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 /* Placeholder text */
@@ -184,18 +187,18 @@ textarea::placeholder {
 
 /* ===== CONTAINERS ===== */
 
-/* Card component */
+/* Card component: hairline border, no radius, no shadow — whitespace and
+   restraint do the separating, not elevation. */
 .card {
   background-color: #ffffff;
   border: 1px solid #e8e6e0;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: all 0.15s ease;
+  border-radius: 0;
+  padding: 32px;
+  transition: border-color 0.35s ease;
 }
 
 .card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #1a1f36;
 }
 
 /* ===== SPACING & LAYOUT ===== */
