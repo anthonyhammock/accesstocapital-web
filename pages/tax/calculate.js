@@ -131,10 +131,10 @@ export default function TaxCalculate() {
           <div className="space-y-8">
             <div className="bg-white border border-gold rounded-lg p-8">
               <h2 className="font-garamond text-3xl text-navy font-bold mb-4">
-                Total Deductions: <span className="text-gold">${results.total_deductions.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                Total Deductions: <span className="text-gold">${results.total.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
               </h2>
               <p className="font-inter text-gray-600">
-                Based on {results.transaction_count} transactions processed
+                Based on {Object.values(results.lines).reduce((sum, line) => sum + line.count, 0)} transactions processed
               </p>
             </div>
 
@@ -142,7 +142,7 @@ export default function TaxCalculate() {
               <h3 className="font-garamond text-2xl text-navy font-medium mb-6">Form Line Breakdown</h3>
 
               <div className="space-y-4">
-                {Object.entries(results.form_line_breakdown).map(([formLine, data]) => (
+                {Object.entries(results.lines).map(([formLine, data]) => (
                   <div key={formLine} className="border-l-4 border-gold pl-6 py-4 hover:bg-offwhite">
                     <div className="flex justify-between items-start mb-2">
                       <p className="font-garamond text-lg text-navy font-bold">{formLine}</p>
