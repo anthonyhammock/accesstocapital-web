@@ -53,6 +53,9 @@ export default function Dashboard() {
                 Upload bank statements. We automatically identify every business deduction and map them to your tax forms.
               </p>
               <p className="text-gold font-semibold">Start Upload →</p>
+          <Link href="/tax/questionnaire">
+            <p className="text-gold font-semibold mt-2">Or answer a few questions instead →</p>
+           </Link>
             </div>
           </Link>
 
