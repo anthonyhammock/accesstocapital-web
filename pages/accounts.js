@@ -6,13 +6,6 @@ export default function Accounts() {
   const [user, setUser] = useState(null)
   const [consumerAccounts, setConsumerAccounts] = useState([])
   const [businessAccounts, setBusinessAccounts] = useState([])
-  const [showAddAccountModal, setShowAddAccountModal] = useState(false)
-  const [accountType, setAccountType] = useState('consumer')
-  const [formData, setFormData] = useState({
-    accountName: '',
-    creditLimit: ''
-  })
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     // Load user data from localStorage
@@ -41,37 +34,6 @@ export default function Accounts() {
       setBusinessAccounts(businessData.accounts || [])
     } catch (err) {
       console.error('Failed to load accounts:', err)
-    }
-  }
-
-  const handleAddAccount = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-
-    try {
-      const endpoint = accountType === 'consumer'
-        ? '/api/consumer-accounts'
-        : '/api/business-accounts'
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: user.id,
-          account_name: formData.accountName,
-          credit_limit: parseFloat(formData.creditLimit)
-        })
-      })
-
-      if (response.ok) {
-        setFormData({ accountName: '', creditLimit: '' })
-        setShowAddAccountModal(false)
-        loadAccounts(user.id)
-      }
-    } catch (err) {
-      console.error('Failed to add account:', err)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -114,17 +76,9 @@ export default function Accounts() {
         <h1 className="font-garamond text-4xl font-medium text-navy mb-2">
           Your Credit Accounts
         </h1>
-        <p className="font-inter text-gray-600 mb-8">
-          Manage your consumer and business credit accounts
+        <p className="font-inter text-gray-600 mb-12">
+          These accounts are automatically created and reported to the credit bureaus each month as part of your subscription.
         </p>
-
-        {/* Add Account Button */}
-        <button
-          onClick={() => setShowAddAccountModal(true)}
-          className="btn-primary mb-12"
-        >
-          + Add New Account
-        </button>
 
         {/* Consumer Accounts */}
         <div className="mb-12">
@@ -144,19 +98,19 @@ export default function Accounts() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Credit Limit:</span>
                       <span className="text-navy font-medium">
-                        ${account.credit_limit?.toLocaleString()}
+                        {account.credit_limit != null ? `$${account.credit_limit.toLocaleString()}` : 'Not yet set'}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Current Balance:</span>
                       <span className="text-navy font-medium">
-                        ${account.current_balance?.toLocaleString()}
+                        ${(account.current_balance ?? 0).toLocaleString()}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Status:</span>
                       <span className="text-success font-medium">
-                        {account.payment_status}
+                        {account.payment_status || 'Not yet reported'}
                       </span>
                     </div>
                   </div>
@@ -190,13 +144,13 @@ export default function Accounts() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Credit Limit:</span>
                       <span className="text-navy font-medium">
-                        ${account.credit_limit?.toLocaleString()}
+                        {account.credit_limit != null ? `$${account.credit_limit.toLocaleString()}` : 'Not yet set'}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Current Balance:</span>
                       <span className="text-navy font-medium">
-                        ${account.current_balance?.toLocaleString()}
+                        ${(account.current_balance ?? 0).toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -206,77 +160,6 @@ export default function Accounts() {
           )}
         </div>
       </main>
-
-      {/* Add Account Modal */}
-      {showAddAccountModal && (
-        <div className="fixed inset-0 bg-navy bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full">
-            <h2 className="font-garamond text-2xl font-medium text-navy mb-6">
-              Add New Account
-            </h2>
-
-            <form onSubmit={handleAddAccount} className="space-y-6">
-              <div>
-                <label className="font-inter text-sm font-medium text-navy block mb-2">
-                  Account Type
-                </label>
-                <select
-                  value={accountType}
-                  onChange={(e) => setAccountType(e.target.value)}
-                  className="w-full"
-                >
-                  <option value="consumer">Consumer</option>
-                  <option value="business">Business</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="font-inter text-sm font-medium text-navy block mb-2">
-                  {accountType === 'consumer' ? 'Card/Loan Name' : 'Business Name'}
-                </label>
-                <input
-                  type="text"
-                  value={formData.accountName}
-                  onChange={(e) => setFormData({...formData, accountName: e.target.value})}
-                  placeholder={accountType === 'consumer' ? 'e.g., Chase Sapphire' : 'Your Business LLC'}
-                  className="w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="font-inter text-sm font-medium text-navy block mb-2">
-                  Credit Limit (optional)
-                </label>
-                <input
-                  type="number"
-                  value={formData.creditLimit}
-                  onChange={(e) => setFormData({...formData, creditLimit: e.target.value})}
-                  placeholder="10000"
-                  className="w-full"
-                />
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex-1 btn-primary"
-                >
-                  {loading ? 'Adding...' : 'Add Account'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowAddAccountModal(false)}
-                  className="flex-1 btn-secondary"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
