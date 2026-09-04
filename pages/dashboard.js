@@ -46,21 +46,21 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Tax Platform */}
-          <Link href="/tax/upload">
-            <div className="bg-white border border-lightgray rounded-lg p-8 hover:shadow-lg cursor-pointer transition">
+          <div className="bg-white border border-lightgray rounded-lg p-8 hover:shadow-lg transition">
+            <Link href="/tax/upload" className="cursor-pointer">
               <h2 className="font-garamond text-2xl text-navy mb-4">📊 Tax Deductions</h2>
               <p className="font-inter text-gray-600 mb-6">
                 Upload bank statements. We automatically identify every business deduction and map them to your tax forms.
               </p>
               <p className="text-gold font-semibold">Start Upload →</p>
-          <Link href="/tax/questionnaire">
-            <p className="text-gold font-semibold mt-2">Or answer a few questions instead →</p>
-           </Link>
-            </div>
-          </Link>
+            </Link>
+            <Link href="/tax/questionnaire">
+              <p className="text-gold font-semibold mt-2">Or answer a few questions instead →</p>
+            </Link>
+          </div>
 
           {/* Credit Builder */}
-          <Link href="/credit-builder/accounts">
+          <Link href="/accounts">
             <div className="bg-white border border-lightgray rounded-lg p-8 hover:shadow-lg cursor-pointer transition">
               <h2 className="font-garamond text-2xl text-navy mb-4">💳 Build Credit</h2>
               <p className="font-inter text-gray-600 mb-6">
