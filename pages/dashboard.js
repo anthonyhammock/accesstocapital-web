@@ -33,6 +33,18 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Credit Builder — primary revenue driver, styled as the featured card
+              (deep gold, per the services-page treatment) and placed first. */}
+          <Link href="/accounts">
+            <div className="p-10 cursor-pointer transition hover:opacity-90" style={{ backgroundColor: '#5A4A30' }}>
+              <h2 className="font-garamond text-3xl text-offwhite mb-4">💳 Build Credit</h2>
+              <p className="font-inter text-offwhite mb-6">
+                Start building credit history with a secure deposit. Real payment reporting to all major bureaus.
+              </p>
+              <p className="text-offwhite font-semibold">View Accounts →</p>
+            </div>
+          </Link>
+
           {/* Tax Platform */}
           <div className="bg-white border border-lightgray p-8 hover:border-navy transition">
             <Link href="/tax/upload" className="cursor-pointer">
@@ -66,17 +78,6 @@ export default function Dashboard() {
                 See revenue, expenses by category, and net income — built automatically from your bookkeeping ledger.
               </p>
               <p className="text-gold font-semibold">View Statement →</p>
-            </div>
-          </Link>
-
-          {/* Credit Builder */}
-          <Link href="/accounts">
-            <div className="bg-white border border-lightgray p-8 hover:border-navy cursor-pointer transition">
-              <h2 className="font-garamond text-2xl text-navy mb-4">💳 Build Credit</h2>
-              <p className="font-inter text-gray-600 mb-6">
-                Start building credit history with a secure deposit. Real payment reporting to all major bureaus.
-              </p>
-              <p className="text-gold font-semibold">View Accounts →</p>
             </div>
           </Link>
         </div>
