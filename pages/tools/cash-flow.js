@@ -6,7 +6,7 @@ import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
 const currentYear = new Date().getFullYear()
 const YEAR_OPTIONS = [currentYear, currentYear - 1, currentYear - 2]
 
-export default function ProfitAndLoss() {
+export default function CashFlow() {
   const { user, ready } = useAuthGuard()
   const [year, setYear] = useState(currentYear)
   const [report, setReport] = useState(null)
@@ -22,13 +22,13 @@ export default function ProfitAndLoss() {
     setLoadingData(true)
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/reports/profit-and-loss?year=${year}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/reports/cash-flow?year=${year}`,
         { headers: authHeaders() }
       )
       const data = await res.json()
       setReport(data)
     } catch (err) {
-      console.error('Failed to load P&L report:', err)
+      console.error('Failed to load cash flow report:', err)
     } finally {
       setLoadingData(false)
     }
@@ -37,14 +37,14 @@ export default function ProfitAndLoss() {
   const handleDownloadCsv = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/reports/profit-and-loss/export?year=${year}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/reports/cash-flow/export?year=${year}`,
         { headers: authHeaders() }
       )
       const blob = await res.blob()
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `profit-and-loss-${year}.csv`
+      a.download = `cash-flow-${year}.csv`
       document.body.appendChild(a)
       a.click()
       a.remove()
@@ -78,19 +78,15 @@ export default function ProfitAndLoss() {
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Profit &amp; Loss</h1>
+            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Cash Flow Statement</h1>
             <p className="font-inter text-gray-600">
-              Built automatically from your Bookkeeping ledger — no separate data entry.
+              Net cash movement by activity, built from your Bookkeeping ledger. To reclassify a
+              transaction as investing or financing, edit it on the Bookkeeping page.
             </p>
           </div>
-          <div className="flex gap-6 mt-2">
-            <Link href="/tools/cash-flow" className="font-inter text-sm text-gold hover:underline">
-              View Cash Flow Statement →
-            </Link>
-            <Link href="/tools/bookkeeping" className="font-inter text-sm text-gold hover:underline">
-              ← Back to Bookkeeping
-            </Link>
-          </div>
+          <Link href="/tools/bookkeeping" className="font-inter text-sm text-gold hover:underline mt-2">
+            ← Back to Bookkeeping
+          </Link>
         </div>
 
         <div className="flex items-center gap-4 my-8">
@@ -113,37 +109,32 @@ export default function ProfitAndLoss() {
           <p className="font-inter text-gray-600">Loading statement...</p>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="card">
-                <p className="font-inter text-sm text-gray-600 mb-2">Revenue</p>
-                <p className="font-garamond text-3xl text-navy font-medium">${fmt(report.revenue.total)}</p>
+                <p className="font-inter text-sm text-gray-600 mb-2">Operating Activities</p>
+                <p className={`font-garamond text-3xl font-medium ${report.operating >= 0 ? 'text-navy' : 'text-error'}`}>
+                  ${fmt(report.operating)}
+                </p>
               </div>
               <div className="card">
-                <p className="font-inter text-sm text-gray-600 mb-2">Total Expenses</p>
-                <p className="font-garamond text-3xl text-navy font-medium">${fmt(report.expenses.total)}</p>
+                <p className="font-inter text-sm text-gray-600 mb-2">Investing Activities</p>
+                <p className={`font-garamond text-3xl font-medium ${report.investing >= 0 ? 'text-navy' : 'text-error'}`}>
+                  ${fmt(report.investing)}
+                </p>
               </div>
               <div className="card">
-                <p className="font-inter text-sm text-gray-600 mb-2">Net Income</p>
-                <p className={`font-garamond text-3xl font-medium ${report.net_income >= 0 ? 'text-navy' : 'text-error'}`}>
-                  ${fmt(report.net_income)}
+                <p className="font-inter text-sm text-gray-600 mb-2">Financing Activities</p>
+                <p className={`font-garamond text-3xl font-medium ${report.financing >= 0 ? 'text-navy' : 'text-error'}`}>
+                  ${fmt(report.financing)}
                 </p>
               </div>
             </div>
 
-            <div className="bg-white border border-lightgray p-8">
-              <h2 className="font-garamond text-2xl font-medium text-navy mb-6">Expenses by Category</h2>
-              {report.expenses.by_category.length === 0 ? (
-                <p className="font-inter text-gray-600">No expenses recorded for {year}.</p>
-              ) : (
-                <div className="space-y-4">
-                  {report.expenses.by_category.map((row) => (
-                    <div key={row.label} className="border-l-4 border-gold pl-6 py-2 flex justify-between items-center">
-                      <p className="font-inter text-navy">{row.label}</p>
-                      <p className="font-inter font-bold text-navy">${fmt(row.total)}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="bg-white border border-gold p-8">
+              <p className="font-inter text-sm text-gray-600 mb-2">Net Change in Cash</p>
+              <p className={`font-garamond text-4xl font-bold ${report.net_change_in_cash >= 0 ? 'text-navy' : 'text-error'}`}>
+                ${fmt(report.net_change_in_cash)}
+              </p>
             </div>
           </>
         )}

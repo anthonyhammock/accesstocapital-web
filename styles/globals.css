@@ -324,28 +324,21 @@ hr {
 
 /* ===== TEXT UTILITIES ===== */
 
-.text-navy {
-  color: #1A1817;
-}
-
-.text-gold {
-  color: #7A6B4C;
-}
-
+/* .text-navy/.text-gold/.bg-navy/.bg-gold/.bg-offwhite were removed from
+   here — they duplicated colors already in tailwind.config.js (navy, gold,
+   offwhite), and a plain hex custom class always wins the cascade over
+   Tailwind's generated utility of the same name (equal specificity, this
+   file loads after @tailwind utilities). That silently broke every
+   bg-opacity and hover-bg-opacity modifier paired with them sitewide —
+   Tailwind's own generated utility uses an rgb(... / var(--tw-bg-opacity))
+   format that composes with opacity modifiers; a flat background-color
+   does not, so e.g. bg-gold with bg-opacity-10 rendered fully solid
+   instead of a 10% tint. Removing the overrides lets Tailwind's own
+   (visually identical, opacity-composable) utilities apply instead — same
+   look, working modifiers. .text-gray is kept: "gray" isn't a token in
+   tailwind.config.js, so this one isn't a duplicate. */
 .text-gray {
   color: #7D766C;
-}
-
-.bg-navy {
-  background-color: #1A1817;
-}
-
-.bg-gold {
-  background-color: #7A6B4C;
-}
-
-.bg-offwhite {
-  background-color: #F7F4EF;
 }
 
 .font-garamond {

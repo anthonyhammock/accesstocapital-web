@@ -11,7 +11,14 @@ const emptyForm = {
   merchant_name: '',
   amount: '',
   transaction_type: 'expense',
+  cash_flow_category: 'operating',
   description: ''
+}
+
+const CASH_FLOW_LABELS = {
+  operating: 'Operating',
+  investing: 'Investing',
+  financing: 'Financing'
 }
 
 export default function Bookkeeping() {
@@ -64,6 +71,7 @@ export default function Bookkeeping() {
       merchant_name: tx.merchant,
       amount: String(tx.amount),
       transaction_type: tx.transaction_type,
+      cash_flow_category: tx.cash_flow_category,
       description: tx.description || ''
     })
     setError('')
@@ -89,6 +97,7 @@ export default function Bookkeeping() {
           merchant_name: form.merchant_name,
           amount: form.amount,
           transaction_type: form.transaction_type,
+          cash_flow_category: form.cash_flow_category,
           description: form.description || undefined
         })
       })
@@ -190,9 +199,14 @@ export default function Bookkeeping() {
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
-          <Link href="/tools/profit-and-loss" className="font-inter text-sm text-gold hover:underline ml-auto">
-            View Profit &amp; Loss Statement →
-          </Link>
+          <div className="flex gap-6 ml-auto">
+            <Link href="/tools/profit-and-loss" className="font-inter text-sm text-gold hover:underline">
+              View Profit &amp; Loss Statement →
+            </Link>
+            <Link href="/tools/cash-flow" className="font-inter text-sm text-gold hover:underline">
+              View Cash Flow Statement →
+            </Link>
+          </div>
         </div>
 
         {summary && (
@@ -278,6 +292,18 @@ export default function Bookkeeping() {
                   required
                 />
               </div>
+              <div>
+                <label className="font-inter text-sm font-medium text-navy block mb-2">Cash Flow Activity</label>
+                <select
+                  value={form.cash_flow_category}
+                  onChange={(e) => setForm({ ...form, cash_flow_category: e.target.value })}
+                  className="w-full"
+                >
+                  <option value="operating">Operating (day-to-day income/expenses)</option>
+                  <option value="investing">Investing (equipment, property, other assets)</option>
+                  <option value="financing">Financing (loans, owner draws, investment)</option>
+                </select>
+              </div>
             </div>
 
             <div>
@@ -315,6 +341,7 @@ export default function Bookkeeping() {
                   <th className="px-6 py-3 font-inter font-semibold text-navy">Date</th>
                   <th className="px-6 py-3 font-inter font-semibold text-navy">Merchant / Source</th>
                   <th className="px-6 py-3 font-inter font-semibold text-navy">Type</th>
+                  <th className="px-6 py-3 font-inter font-semibold text-navy">Activity</th>
                   <th className="px-6 py-3 font-inter font-semibold text-navy">Amount</th>
                   <th className="px-6 py-3 font-inter font-semibold text-navy">Description</th>
                   <th className="px-6 py-3 font-inter font-semibold text-navy"></th>
@@ -330,6 +357,7 @@ export default function Bookkeeping() {
                         {tx.transaction_type === 'income' ? 'Income' : 'Expense'}
                       </span>
                     </td>
+                    <td className="px-6 py-4 font-inter text-gray-600">{CASH_FLOW_LABELS[tx.cash_flow_category] || 'Operating'}</td>
                     <td className="px-6 py-4 font-inter font-medium text-navy">
                       ${tx.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </td>
