@@ -61,7 +61,7 @@ export default function Login() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <AvatarLogo size="sm" />
-            <span className="font-garamond font-bold text-navy text-lg">Access to Capital</span>
+            <span className="font-garamond font-bold text-navy text-lg">BlissPoint Access</span>
           </Link>
         </div>
       </header>

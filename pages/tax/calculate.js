@@ -58,7 +58,7 @@ export default function TaxCalculate() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <AvatarLogo size="sm" />
-            <span className="font-garamond text-navy text-base tracking-wide">Access to Capital</span>
+            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
           <button onClick={() => {
             localStorage.removeItem('user')

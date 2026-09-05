@@ -98,7 +98,7 @@ export default function Register() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <AvatarLogo size="sm" />
-            <span className="font-garamond font-medium text-navy text-lg">Access to Capital</span>
+            <span className="font-garamond font-medium text-navy text-lg">BlissPoint Access</span>
           </Link>
         </div>
       </header>
@@ -108,7 +108,7 @@ export default function Register() {
         <div className="w-full max-w-md">
           <div className="bg-white border border-lightgray p-12">
             <h1 className="font-garamond text-3xl font-medium text-navy mb-2">Create Account</h1>
-            <p className="font-inter text-gray-600 mb-8">Join Access to Capital today</p>
+            <p className="font-inter text-gray-600 mb-8">Join BlissPoint Access today</p>
 
             {/* Error message */}
             {error && (

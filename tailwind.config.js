@@ -8,16 +8,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Cartier primary colors
-        navy: '#1a1f36',
-        gold: '#d4af37',
-        offwhite: '#f8f7f2',
-        lightgray: '#e8e6e0',
-        
+        // BlissPoint Access — Graphite & Platinum palette.
+        // Token names (navy/gold/offwhite/lightgray) are kept as-is even
+        // though the values no longer describe navy or gold, so every
+        // existing text-navy/bg-gold/etc. class across the app picks up
+        // the new brand colors without a sitewide class rename.
+        navy: '#1A1817',      // Warm Black (was navy blue)
+        gold: '#8A7B5C',      // Brass Whisper (was gold) — accent, used sparingly
+        offwhite: '#F7F4EF',  // Ivory White
+        lightgray: '#E5E0D5', // platinum-tinted hairline borders
+        platinum: '#C9C0B3',  // Platinum Champagne — dark-background accent/hairlines
+        graphite: '#3A342E',  // Espresso Graphite — dark-background mid-tone
+
         // Semantic colors (for status messages)
         success: '#2d7a3e',
         error: '#c41e3a',
-        neutral: '#888888',
+        neutral: '#7D766C',
       },
       fontFamily: {
         garamond: ['Garamond', 'Georgia', 'serif'],
