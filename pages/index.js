@@ -43,35 +43,28 @@ export default function Home() {
         </main>
       </div>
 
-      {/* Services teaser */}
-      <section className="max-w-6xl mx-auto px-6 py-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="card">
-            <h3 className="font-garamond text-2xl text-navy mb-4">For Consumers</h3>
-            <p className="font-inter text-navy">
-              Build your personal credit profile through automated, transparent reporting.
-              Starting at $10/month.
-            </p>
-          </div>
-
-          <div className="card">
-            <h3 className="font-garamond text-2xl text-navy mb-4">For Businesses</h3>
-            <p className="font-inter text-navy">
-              Establish business credit that lenders trust, and add every business you own.
-              Starting at $50/month per business.
-            </p>
-          </div>
-
-          <div className="card">
-            <h3 className="font-garamond text-2xl text-navy mb-4">Growing Ecosystem</h3>
-            <p className="font-inter text-navy">
-              Automated federal tax deduction discovery today, with new essential business
-              tools on the way.
-            </p>
-          </div>
+      {/* Featured story */}
+      <section className="max-w-6xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div className="bg-lightgray" style={{ aspectRatio: '4 / 5' }}>
+          <img
+            src="/images/business-owner.jpg"
+            alt="A successful Black business owner"
+            className="w-full h-full object-cover"
+          />
         </div>
 
-        <div className="text-center mt-16">
+        <div>
+          <p className="font-inter text-xs tracking-[0.25em] uppercase text-gold mb-4">
+            Built For Owners Like You
+          </p>
+          <h2 className="font-garamond text-4xl text-navy font-medium mb-6 leading-tight">
+            Every Tool Your Business Deserves, In One Place
+          </h2>
+          <p className="font-inter text-lg text-gray-600 mb-8 leading-relaxed">
+            From personal and business credit-building to automated tax deductions and the
+            tools coming next, BlissPoint Access is built for owners who expect more for
+            their businesses.
+          </p>
           <Link href="/services" className="font-inter text-sm text-gold hover:underline">
             See everything BlissPoint Access offers →
           </Link>
