@@ -213,6 +213,44 @@ button {
   color: #F7F4EF;
 }
 
+/* Homepage hero variants only — everywhere else keeps the plain
+   .btn-primary/.btn-secondary above. */
+.btn-hero-primary {
+  background-color: #7A6B4C;
+  color: #F7F4EF;
+  border: 1px solid #1A1817;
+}
+
+.btn-hero-primary:hover {
+  background-color: #63563D;
+}
+
+/* A slow white fill "zooms" in from the button's own center on hover,
+   rather than an instant color swap — black text/outline stay constant
+   throughout so it never becomes hard to read mid-transition. */
+.btn-hero-secondary {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  background-color: transparent;
+  color: #1A1817;
+  border: 1px solid #1A1817;
+}
+
+.btn-hero-secondary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #FFFFFF;
+  transform: scale(0);
+  transition: transform 0.7s ease;
+}
+
+.btn-hero-secondary:hover::before {
+  transform: scale(1);
+}
+
 /* Secondary CTA variant for use on the dark hero gradient. */
 .btn-outline-light {
   background-color: transparent;

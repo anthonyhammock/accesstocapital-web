@@ -36,10 +36,10 @@ export default function Home() {
 
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/register">
-              <button className="btn-primary">Access Your BlissPoint</button>
+              <button className="btn-hero-primary">Access Your BlissPoint</button>
             </Link>
             <Link href="/services">
-              <button className="btn-secondary">Learn More...</button>
+              <button className="btn-hero-secondary">Learn More...</button>
             </Link>
           </div>
         </main>
