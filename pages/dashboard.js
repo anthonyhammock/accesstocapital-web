@@ -46,6 +46,13 @@ const TOOL_CATEGORIES = [
         cta: 'View Statement →'
       },
       {
+        icon: '⚖️',
+        name: 'Balance Sheet',
+        description: 'Assets, liabilities, and equity — Cash, A/R, and A/P pulled automatically from tools you already use.',
+        href: '/tools/balance-sheet',
+        cta: 'View Statement →'
+      },
+      {
         icon: '📋',
         name: 'Vendor & AP Management',
         description: 'Track vendors, bills you owe, and payments — with an aging report so nothing slips past due.',

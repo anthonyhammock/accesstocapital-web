@@ -81,6 +81,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'Balance Sheet',
+    price: 'Included w/ Business or Personal Credit Building',
+    description:
+      'Assets, liabilities, and equity — Cash, Accounts Receivable, and Accounts Payable pulled automatically from your bookkeeping, invoices, and bills.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:

@@ -14,6 +14,7 @@ const QUICK_LINKS = [
   { label: 'Bookkeeping', href: '/tools/bookkeeping' },
   { label: 'Profit & Loss', href: '/tools/profit-and-loss' },
   { label: 'Cash Flow', href: '/tools/cash-flow' },
+  { label: 'Balance Sheet', href: '/tools/balance-sheet' },
   { label: 'Client Portal', href: '/tools/client-portal' },
   { label: 'Scheduling', href: '/tools/scheduling' },
   { label: 'Trading Signals', href: '/tools/trading-signals' },
