@@ -46,6 +46,18 @@ const TOOL_CATEGORIES = [
         cta: 'View Statement →'
       }
     ]
+  },
+  {
+    name: 'Working with Clients',
+    tools: [
+      {
+        icon: '🤝',
+        name: 'Client Portal',
+        description: 'Share documents with clients through a private link — no account required on their end. Upload, download, and comment together.',
+        href: '/tools/client-portal',
+        cta: 'Open Client Portal →'
+      }
+    ]
   }
 ]
 

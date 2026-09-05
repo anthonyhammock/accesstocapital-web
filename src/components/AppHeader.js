@@ -14,6 +14,7 @@ const QUICK_LINKS = [
   { label: 'Bookkeeping', href: '/tools/bookkeeping' },
   { label: 'Profit & Loss', href: '/tools/profit-and-loss' },
   { label: 'Cash Flow', href: '/tools/cash-flow' },
+  { label: 'Client Portal', href: '/tools/client-portal' },
 ]
 
 // breadcrumbs: an array of { label, href? } for everything AFTER "Dashboard"

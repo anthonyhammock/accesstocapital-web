@@ -39,6 +39,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'Client Portal & Document Collaboration',
+    price: 'Included',
+    description:
+      'Share documents with your clients through a private link — no account required on their end. They can view, download, upload their own files, and comment, all in one place.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:
