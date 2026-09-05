@@ -67,6 +67,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'Invoicing',
+    price: 'Included w/ Business or Personal',
+    description:
+      'Create professional invoices, send a shareable link your client can view online, and track payments as they come in.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:
