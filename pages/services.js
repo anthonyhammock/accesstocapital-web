@@ -26,42 +26,42 @@ const services = [
   },
   {
     name: 'Federal Tax Deduction Access',
-    price: 'Included with either a Personal or Business subscription',
+    price: 'Included w/ Business or Personal',
     description:
       'Upload your transactions and BlissPoint Access automatically finds every federal deduction you qualify for, mapped straight to the right form line.',
     href: '/register',
   },
   {
     name: 'Bookkeeping, Profit & Loss, and Cash Flow',
-    price: 'Included with either a Personal or Business subscription',
+    price: 'Included w/ Business or Personal',
     description:
       'Track income and expenses in one ledger, then see your profit & loss and cash flow statements built automatically from it — no separate data entry.',
     href: '/register',
   },
   {
     name: 'Client Portal & Document Collaboration',
-    price: 'Included with either a Personal or Business subscription',
+    price: 'Included w/ Business or Personal',
     description:
       'Share documents with your clients through a private link — no account required on their end. They can view, download, upload their own files, and comment, all in one place.',
     href: '/register',
   },
   {
     name: 'Scheduling & Booking Links',
-    price: 'Included with either a Personal or Business subscription',
+    price: 'Included w/ Business or Personal',
     description:
       'Set your weekly availability once and share a booking link — clients see your real open times in their own timezone and book themselves, no back-and-forth.',
     href: '/register',
   },
   {
     name: 'Trading Signals (Beta)',
-    price: 'Included with either a Personal or Business subscription',
+    price: 'Included w/ Business or Personal',
     description:
       'Educational technical-analysis signals for stocks you watch, delivered as alerts — not investment advice, and you always execute manually on your own broker. Currently in beta.',
     href: '/register',
   },
   {
     name: 'Vendor & AP Management',
-    price: 'Included with either a Personal or Business subscription',
+    price: 'Included w/ Business or Personal',
     description:
       'Track every vendor, the bills you owe them, and payments as you make them — with an aging report so nothing slips past due.',
     href: '/register',
