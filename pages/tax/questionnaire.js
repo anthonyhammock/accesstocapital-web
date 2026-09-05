@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { AvatarLogo } from '../../src/components/LogoComponent'
-import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
+import AppHeader from '../../src/components/AppHeader'
+import { useAuthGuard, authHeaders } from '../../src/lib/auth'
 
 export default function TaxQuestionnaire() {
-  const { ready } = useAuthGuard()
+  const { user, ready } = useAuthGuard()
   const [stage, setStage] = useState('basics') // 'basics' | 'questions' | 'results'
 
   const [questions, setQuestions] = useState([])
@@ -132,17 +132,7 @@ export default function TaxQuestionnaire() {
 
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
-      <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <AvatarLogo size="sm" />
-            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
-          </Link>
-          <button onClick={logout} className="text-navy hover:text-gold">
-            Sign Out
-          </button>
-        </div>
-      </header>
+      <AppHeader user={user} breadcrumbs={[{ label: 'Taxes', href: '/tax/upload' }, { label: 'Tax Questionnaire' }]} />
 
       <main className="flex-1 px-6 py-12 w-full">
 

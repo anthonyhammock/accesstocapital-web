@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { AvatarLogo } from '../src/components/LogoComponent'
-import { useAuthGuard, logout } from '../src/lib/auth'
+import AppHeader from '../src/components/AppHeader'
+import { useAuthGuard } from '../src/lib/auth'
 
 // Every tool lists itself here under a plain-English category. A category
 // only renders once it has at least one tool in it — add a new tool to a
@@ -58,17 +58,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
-      <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <AvatarLogo size="sm" />
-            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
-          </Link>
-          <button onClick={logout} className="text-navy hover:text-gold">
-            Sign Out
-          </button>
-        </div>
-      </header>
+      <AppHeader user={user} />
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="mb-12">
