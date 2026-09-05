@@ -44,6 +44,13 @@ const TOOL_CATEGORIES = [
         description: 'See net cash movement by operating, investing, and financing activity for any year.',
         href: '/tools/cash-flow',
         cta: 'View Statement →'
+      },
+      {
+        icon: '📋',
+        name: 'Vendor & AP Management',
+        description: 'Track vendors, bills you owe, and payments — with an aging report so nothing slips past due.',
+        href: '/tools/vendor-ap',
+        cta: 'Open Vendor & AP →'
       }
     ]
   },

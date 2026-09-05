@@ -60,6 +60,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'Vendor & AP Management',
+    price: 'Included',
+    description:
+      'Track every vendor, the bills you owe them, and payments as you make them — with an aging report so nothing slips past due.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:
