@@ -25,6 +25,7 @@ export default function CrmPipeline() {
   const [value, setValue] = useState('')
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState('')
+  const [loadError, setLoadError] = useState('')
   const [movingId, setMovingId] = useState(null)
 
   useEffect(() => {
@@ -35,12 +36,16 @@ export default function CrmPipeline() {
 
   const loadAll = async () => {
     setLoadingData(true)
+    setLoadError('')
     try {
       const [dealsRes, summaryRes, clientsRes] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/crm/deals`, { headers: authHeaders() }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/crm/summary`, { headers: authHeaders() }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/portal/clients`, { headers: authHeaders() }),
       ])
+      if (!dealsRes.ok || !summaryRes.ok || !clientsRes.ok) {
+        setLoadError('Could not load your pipeline. Please refresh the page.')
+      }
       setDeals(dealsRes.ok ? (await dealsRes.json()).deals || [] : [])
       setSummary(summaryRes.ok ? await summaryRes.json() : null)
       const clientList = clientsRes.ok ? (await clientsRes.json()).clients || [] : []
@@ -52,6 +57,7 @@ export default function CrmPipeline() {
       }
     } catch (err) {
       console.error('Failed to load CRM data:', err)
+      setLoadError('Could not load your pipeline. Please refresh the page.')
     } finally {
       setLoadingData(false)
     }
@@ -115,6 +121,7 @@ export default function CrmPipeline() {
 
   const handleMoveStage = async (dealId, newStage) => {
     setMovingId(dealId)
+    setError('')
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/crm/deals/${dealId}/stage`, {
         method: 'POST',
@@ -123,9 +130,12 @@ export default function CrmPipeline() {
       })
       if (res.ok) {
         await loadAll()
+      } else {
+        setError('Could not move that deal. Please try again.')
       }
     } catch (err) {
       console.error('Failed to move deal:', err)
+      setError('Network error moving that deal. Please try again.')
     } finally {
       setMovingId(null)
     }
@@ -145,6 +155,8 @@ export default function CrmPipeline() {
       <main className="flex-1 max-w-7xl mx-auto px-6 py-12 w-full">
         <h1 className="font-garamond text-4xl font-medium text-gold mb-2">CRM & Sales Pipeline</h1>
         <p className="font-inter text-gray-600 mb-10">Track deals from first contact to close.</p>
+
+        {loadError && <p className="font-inter text-sm text-error mb-6">{loadError}</p>}
 
         {summary && (
           <div className="bg-white border border-lightgray p-6 mb-10 flex flex-wrap gap-8">
