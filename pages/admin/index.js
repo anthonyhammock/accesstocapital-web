@@ -49,6 +49,7 @@ export default function AdminDashboard() {
   const [loadingData, setLoadingData] = useState(true)
   const [loadingUsers, setLoadingUsers] = useState(false)
   const [compingId, setCompingId] = useState(null)
+  const [loadError, setLoadError] = useState('')
 
   useEffect(() => {
     if (ready) {
@@ -58,6 +59,7 @@ export default function AdminDashboard() {
 
   const loadAll = async () => {
     setLoadingData(true)
+    setLoadError('')
     try {
       const [kpisRes, statusRes] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/kpis`, { headers: authHeaders() }),
@@ -67,10 +69,15 @@ export default function AdminDashboard() {
         setForbidden(true)
         return
       }
-      setKpis(kpisRes.ok ? await kpisRes.json() : null)
-      setStatus(statusRes.ok ? await statusRes.json() : null)
+      if (!kpisRes.ok || !statusRes.ok) {
+        setLoadError('Could not load admin data. Please try again.')
+        return
+      }
+      setKpis(await kpisRes.json())
+      setStatus(await statusRes.json())
       await loadUsers(1, '')
     } catch (err) {
+      setLoadError('Network error loading admin data. Please try again.')
       console.error('Failed to load admin data:', err)
     } finally {
       setLoadingData(false)
@@ -79,6 +86,7 @@ export default function AdminDashboard() {
 
   const loadUsers = async (targetPage, searchTerm) => {
     setLoadingUsers(true)
+    setLoadError('')
     try {
       const params = new URLSearchParams({ page: targetPage, page_size: PAGE_SIZE })
       if (searchTerm) params.set('search', searchTerm)
@@ -87,13 +95,16 @@ export default function AdminDashboard() {
         setForbidden(true)
         return
       }
-      if (res.ok) {
-        const data = await res.json()
-        setUsers(data.users || [])
-        setUserTotal(data.total || 0)
-        setPage(data.page || 1)
+      if (!res.ok) {
+        setLoadError('Could not load the user directory. Please try again.')
+        return
       }
+      const data = await res.json()
+      setUsers(data.users || [])
+      setUserTotal(data.total || 0)
+      setPage(data.page || 1)
     } catch (err) {
+      setLoadError('Network error loading the user directory. Please try again.')
       console.error('Failed to load users:', err)
     } finally {
       setLoadingUsers(false)
@@ -147,6 +158,10 @@ export default function AdminDashboard() {
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Admin Portal</h1>
         <p className="font-inter text-gray-600 mb-10">Platform KPIs, system status, and account management.</p>
+
+        {loadError && (
+          <p className="font-inter text-sm text-error bg-error bg-opacity-10 px-4 py-3 mb-6">{loadError}</p>
+        )}
 
         {loadingData ? (
           <p className="font-inter text-gray-600">Loading...</p>
