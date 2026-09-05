@@ -100,7 +100,7 @@ export default function Dashboard() {
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="mb-12">
-          <h1 className="font-garamond text-4xl font-medium text-navy mb-2">
+          <h1 className="font-garamond text-4xl font-medium text-gold mb-2">
             Welcome, {user.first_name}
           </h1>
           <p className="font-inter text-gray-600">Choose a service to get started.</p>

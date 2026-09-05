@@ -83,7 +83,7 @@ export default function TradingSignalsPerformance() {
       <AppHeader user={user} breadcrumbs={[{ label: 'Trading Signals', href: '/tools/trading-signals' }, { label: 'Performance' }]} />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-12 w-full">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Performance</h1>
+        <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Performance</h1>
         <p className="font-inter text-gray-600 mb-10">
           Based on trades you've logged yourself — nothing here is executed automatically.
         </p>

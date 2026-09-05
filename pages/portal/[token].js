@@ -154,7 +154,7 @@ export default function PublicClientPortal() {
           <p className="font-inter text-gray-600">Loading...</p>
         ) : notFound ? (
           <div className="bg-white border border-lightgray p-10 text-center">
-            <h1 className="font-garamond text-2xl text-navy mb-3">Link Not Found</h1>
+            <h1 className="font-garamond text-2xl text-gold mb-3">Link Not Found</h1>
             <p className="font-inter text-gray-600">
               This portal link is invalid or has been revoked. Please contact whoever shared it
               with you for a new link.
@@ -163,7 +163,7 @@ export default function PublicClientPortal() {
         ) : (
           <>
             <p className="font-inter text-xs tracking-[0.2em] uppercase text-gold mb-2">Shared Documents</p>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-10">
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-10">
               Welcome, {portal.client_name}
             </h1>
 

@@ -63,7 +63,7 @@ export default function TaxUpload() {
       <AppHeader user={user} breadcrumbs={[{ label: 'Taxes' }, { label: 'Tax Deductions' }]} />
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Upload Bank Statements</h1>
+        <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Upload Bank Statements</h1>
         <p className="font-inter text-gray-600 mb-12">We'll automatically categorize your business expenses.</p>
 
         {!uploadComplete && (
@@ -142,7 +142,7 @@ export default function TaxUpload() {
 
             <div className="flex gap-4">
               <Link href="/tax/calculate">
-                <button className="px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90">
+                <button className="px-8 py-3 bg-gold text-offwhite hover:bg-opacity-90">
                   Continue to Calculation
                 </button>
               </Link>

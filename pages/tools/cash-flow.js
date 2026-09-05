@@ -67,7 +67,7 @@ export default function CashFlow() {
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Cash Flow Statement</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Cash Flow Statement</h1>
             <p className="font-inter text-gray-600">
               Net cash movement by activity, built from your Bookkeeping ledger. To reclassify a
               transaction as investing or financing, edit it on the Bookkeeping page.

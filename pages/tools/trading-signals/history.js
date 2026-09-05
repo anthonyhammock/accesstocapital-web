@@ -53,7 +53,7 @@ export default function TradingSignalsHistory() {
       <main className="flex-1 max-w-5xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Signal History</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Signal History</h1>
             <p className="font-inter text-gray-600">Past signals for the symbols on your watchlist.</p>
           </div>
           <select value={days} onChange={(e) => setDays(parseInt(e.target.value))} className="px-4 py-2 border border-lightgray">

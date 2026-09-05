@@ -225,7 +225,7 @@ export default function ClientPortalDetail() {
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">{client.name}</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">{client.name}</h1>
             {client.email && <p className="font-inter text-gray-600">{client.email}</p>}
             {client.notes && <p className="font-inter text-sm text-gray-500 mt-1">{client.notes}</p>}
           </div>

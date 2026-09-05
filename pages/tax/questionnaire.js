@@ -138,7 +138,7 @@ export default function TaxQuestionnaire() {
 
         {stage === 'basics' && (
           <div className="max-w-xl mx-auto">
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">A Few Quick Basics First</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">A Few Quick Basics First</h1>
             <p className="font-inter text-gray-600 mb-10">This helps us map your deductions to the right tax form.</p>
 
             <div className="bg-white border border-lightgray p-8 mb-8">
@@ -317,7 +317,7 @@ export default function TaxQuestionnaire() {
                 Start Over
               </button>
               <Link href="/dashboard" className="flex-1">
-                <button className="w-full px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90">
+                <button className="w-full px-8 py-3 bg-gold text-offwhite hover:bg-opacity-90">
                   Back to Dashboard
                 </button>
               </Link>

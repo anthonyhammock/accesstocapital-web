@@ -93,7 +93,7 @@ export default function VendorApDashboard() {
       <AppHeader user={user} breadcrumbs={[{ label: 'Vendor & AP Management' }]} />
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Vendor & AP Management</h1>
+        <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Vendor & AP Management</h1>
         <p className="font-inter text-gray-600 mb-10">
           Track vendors, bills you owe, and payments — with an aging report so nothing slips past due.
         </p>

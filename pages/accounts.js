@@ -133,7 +133,7 @@ export default function Accounts() {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex flex-wrap items-center gap-4 mb-2">
-          <h1 className="font-garamond text-4xl font-medium text-navy">
+          <h1 className="font-garamond text-4xl font-medium text-gold">
             Your Credit Accounts
           </h1>
           {accountType && (

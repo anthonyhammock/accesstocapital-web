@@ -98,7 +98,7 @@ export default function Services() {
         <p className="font-inter text-xs tracking-[0.25em] uppercase text-gold mb-4 text-center">
           Your Bliss Point
         </p>
-        <h1 className="font-cormorant text-5xl font-medium text-navy mb-6 text-center">
+        <h1 className="font-cormorant text-5xl font-medium text-gold mb-6 text-center">
           Everything BlissPoint Access Offers
         </h1>
         <p className="font-inter text-lg text-gray-600 mb-16 max-w-2xl mx-auto text-center leading-relaxed">

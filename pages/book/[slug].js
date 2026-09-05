@@ -103,14 +103,14 @@ export default function PublicBookingPage() {
           <p className="font-inter text-gray-600">Loading...</p>
         ) : notFound ? (
           <div className="bg-white border border-lightgray p-10 text-center">
-            <h1 className="font-garamond text-2xl text-navy mb-3">Link Not Found</h1>
+            <h1 className="font-garamond text-2xl text-gold mb-3">Link Not Found</h1>
             <p className="font-inter text-gray-600">
               This booking link is invalid or is no longer accepting bookings.
             </p>
           </div>
         ) : confirmed ? (
           <div className="bg-white border border-gold p-10 text-center">
-            <h1 className="font-garamond text-2xl text-navy mb-3">You're Booked!</h1>
+            <h1 className="font-garamond text-2xl text-gold mb-3">You're Booked!</h1>
             <p className="font-inter text-gray-600 mb-2">
               {new Date(confirmed.start_at).toLocaleString(undefined, {
                 weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
@@ -122,7 +122,7 @@ export default function PublicBookingPage() {
         ) : (
           <>
             <p className="font-inter text-xs tracking-[0.2em] uppercase text-gold mb-2">Book a Time</p>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">{portal.owner_name}</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">{portal.owner_name}</h1>
             <p className="font-inter text-gray-600 mb-10">{portal.meeting_duration_minutes}-minute meeting</p>
 
             {!selectedSlot ? (

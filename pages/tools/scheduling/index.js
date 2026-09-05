@@ -241,7 +241,7 @@ export default function SchedulingSettings() {
       <AppHeader user={user} breadcrumbs={[{ label: 'Scheduling' }]} />
 
       <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Scheduling &amp; Booking Links</h1>
+        <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Scheduling &amp; Booking Links</h1>
         <p className="font-inter text-gray-600 mb-10">
           Set your weekly availability and share your booking link — visitors pick an open time and
           book it themselves, no account required on their end.

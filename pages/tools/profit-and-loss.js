@@ -67,7 +67,7 @@ export default function ProfitAndLoss() {
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Profit &amp; Loss</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Profit &amp; Loss</h1>
             <p className="font-inter text-gray-600">
               Built automatically from your Bookkeeping ledger — no separate data entry.
             </p>

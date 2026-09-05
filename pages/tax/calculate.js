@@ -54,7 +54,7 @@ export default function TaxCalculate() {
       <AppHeader user={user} breadcrumbs={[{ label: 'Taxes', href: '/tax/upload' }, { label: 'Calculate Deductions' }]} />
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Calculate Deductions</h1>
+        <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Calculate Deductions</h1>
         <p className="font-inter text-gray-600 mb-12">Configure your tax situation and review results.</p>
 
         {!results && (
@@ -144,7 +144,7 @@ export default function TaxCalculate() {
 
             <div className="flex gap-4">
               <Link href="/tax/upload">
-                <button className="flex-1 px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90">
+                <button className="flex-1 px-8 py-3 bg-gold text-offwhite hover:bg-opacity-90">
                   Upload Another File
                 </button>
               </Link>

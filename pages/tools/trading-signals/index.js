@@ -205,7 +205,7 @@ export default function TradingSignalsDashboard() {
       )}
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-12 w-full">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Trading Signals</h1>
+        <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Trading Signals</h1>
         <p className="font-inter text-gray-600 mb-4">
           Technical-analysis signals for your watchlist, delivered as alerts. You always execute
           manually on your own broker.

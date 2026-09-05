@@ -166,7 +166,7 @@ export default function Bookkeeping() {
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Bookkeeping</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Bookkeeping</h1>
             <p className="font-inter text-gray-600">
               Every transaction here is saved to your account automatically — nothing to export
               unless you want a copy.
