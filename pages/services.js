@@ -74,6 +74,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'CRM & Sales Pipeline',
+    price: 'Included w/ Business or Personal',
+    description:
+      'Track deals from first contact to close, log every call and note, and convert a won deal straight into an invoice.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:

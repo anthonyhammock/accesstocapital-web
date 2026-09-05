@@ -65,6 +65,13 @@ const TOOL_CATEGORIES = [
     name: 'Working with Clients',
     tools: [
       {
+        icon: '📈',
+        name: 'CRM & Sales Pipeline',
+        description: 'Track deals from first contact to close, log activity, and convert a won deal straight into an invoice.',
+        href: '/tools/crm',
+        cta: 'Open CRM →'
+      },
+      {
         icon: '🤝',
         name: 'Client Portal',
         description: 'Share documents with clients through a private link — no account required on their end. Upload, download, and comment together.',
