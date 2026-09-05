@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { AvatarLogo } from '../src/components/LogoComponent'
+import { useAuthGuard, logout } from '../src/lib/auth'
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null)
+  const { user, ready } = useAuthGuard()
 
-  useEffect(() => {
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-  }, [])
-
-  if (!user) {
+  if (!ready) {
     return <div>Loading...</div>
   }
 
@@ -24,13 +18,7 @@ export default function Dashboard() {
             <AvatarLogo size="sm" />
             <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
-          <button
-            onClick={() => {
-              localStorage.removeItem('user')
-              window.location.href = '/login'
-            }}
-            className="text-navy hover:text-gold"
-          >
+          <button onClick={logout} className="text-navy hover:text-gold">
             Sign Out
           </button>
         </div>

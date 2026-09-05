@@ -43,8 +43,9 @@ export default function Login() {
         return
       }
 
-      // Save user to localStorage and go to the accounts dashboard
+      // Save user + session token to localStorage and go to the accounts dashboard
       localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem('token', data.token)
       window.location.href = '/dashboard'
 
     } catch (err) {

@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { AvatarLogo } from '../../src/components/LogoComponent'
+import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
 
 export default function TaxCalculate() {
-  const [user, setUser] = useState(null)
+  const { ready } = useAuthGuard()
   const [entityType, setEntityType] = useState('SOLE_PROP')
   const [taxYear, setTaxYear] = useState(2026)
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState(null)
   const [error, setError] = useState('')
   const [officerWages, setOfficerWages] = useState(0)
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-  }, [])
 
   const handleCalculate = async () => {
     setLoading(true)
@@ -25,9 +19,8 @@ export default function TaxCalculate() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tax/calculate-deductions`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
-          user_id: user.id,
           tax_year: taxYear,
           entity_type: entityType,
           transactions: [],  // Will fetch from DB on backend
@@ -52,6 +45,10 @@ export default function TaxCalculate() {
     }
   }
 
+  if (!ready) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
       <header className="bg-white border-b border-lightgray">
@@ -60,10 +57,7 @@ export default function TaxCalculate() {
             <AvatarLogo size="sm" />
             <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
-          <button onClick={() => {
-            localStorage.removeItem('user')
-            window.location.href = '/login'
-          }} className="text-navy hover:text-gold">Sign Out</button>
+          <button onClick={logout} className="text-navy hover:text-gold">Sign Out</button>
         </div>
       </header>
 

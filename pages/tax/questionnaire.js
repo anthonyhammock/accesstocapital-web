@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { AvatarLogo } from '../../src/components/LogoComponent'
+import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
 
 export default function TaxQuestionnaire() {
-  const [user, setUser] = useState(null)
+  const { ready } = useAuthGuard()
   const [stage, setStage] = useState('basics') // 'basics' | 'questions' | 'results'
 
   const [questions, setQuestions] = useState([])
@@ -21,13 +22,6 @@ export default function TaxQuestionnaire() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [results, setResults] = useState(null)
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-  }, [])
 
   useEffect(() => {
     fetchQuestions()
@@ -98,9 +92,8 @@ export default function TaxQuestionnaire() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tax/submit-questionnaire`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
-          user_id: user.id,
           tax_year: taxYear,
           entity_type: entityType,
           answers: answerList,
@@ -133,7 +126,7 @@ export default function TaxQuestionnaire() {
     setStage('basics')
   }
 
-  if (!user) {
+  if (!ready) {
     return <div>Loading...</div>
   }
 
@@ -145,13 +138,7 @@ export default function TaxQuestionnaire() {
             <AvatarLogo size="sm" />
             <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
-          <button
-            onClick={() => {
-              localStorage.removeItem('user')
-              window.location.href = '/login'
-            }}
-            className="text-navy hover:text-gold"
-          >
+          <button onClick={logout} className="text-navy hover:text-gold">
             Sign Out
           </button>
         </div>

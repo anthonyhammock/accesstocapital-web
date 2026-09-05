@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { AvatarLogo } from '../src/components/LogoComponent'
+import { useAuthGuard, authHeaders, logout } from '../src/lib/auth'
 
 export default function Accounts() {
-  const [user, setUser] = useState(null)
+  const { user, ready } = useAuthGuard()
   const [consumerAccounts, setConsumerAccounts] = useState([])
   const [businesses, setBusinesses] = useState([])
   const [showAddBusiness, setShowAddBusiness] = useState(false)
@@ -17,27 +18,25 @@ export default function Accounts() {
   const [addBusinessError, setAddBusinessError] = useState('')
 
   useEffect(() => {
-    // Load user data from localStorage
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      const userData = JSON.parse(userStr)
-      setUser(userData)
-      loadAccounts(userData.id)
+    if (ready) {
+      loadAccounts()
     }
-  }, [])
+  }, [ready])
 
-  const loadAccounts = async (userId) => {
+  const loadAccounts = async () => {
     try {
-      // Load consumer accounts
+      // The backend identifies the caller from the auth token — no user_id needed.
       const consumerRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/consumer-accounts?user_id=${userId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/consumer-accounts`,
+        { headers: authHeaders() }
       )
       const consumerData = await consumerRes.json()
       setConsumerAccounts(consumerData.accounts || [])
 
       // Load businesses (each is a group of tradeline accounts)
       const businessRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/businesses?user_id=${userId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/businesses`,
+        { headers: authHeaders() }
       )
       const businessData = await businessRes.json()
       setBusinesses(businessData.businesses || [])
@@ -54,9 +53,8 @@ export default function Accounts() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/businesses`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
-          user_id: user.id,
           business_name: businessForm.business_name,
           ein: businessForm.ein || undefined,
           business_type: businessForm.business_type || undefined,
@@ -74,7 +72,7 @@ export default function Accounts() {
 
       setBusinessForm({ business_name: '', ein: '', business_type: '', annual_revenue: '' })
       setShowAddBusiness(false)
-      loadAccounts(user.id)
+      loadAccounts()
     } catch (err) {
       setAddBusinessError('Network error. Please try again.')
     } finally {
@@ -82,7 +80,7 @@ export default function Accounts() {
     }
   }
 
-  if (!user) {
+  if (!ready) {
     return (
       <div className="min-h-screen bg-offwhite flex items-center justify-center">
         <p className="text-navy">Redirecting to login...</p>
@@ -103,13 +101,7 @@ export default function Accounts() {
             <span className="font-inter text-sm text-navy">
               Welcome, {user.first_name}
             </span>
-            <button
-              onClick={() => {
-                localStorage.removeItem('user')
-                window.location.href = '/login'
-              }}
-              className="text-gold font-medium hover:underline"
-            >
+            <button onClick={logout} className="text-gold font-medium hover:underline">
               Sign Out
             </button>
           </div>
