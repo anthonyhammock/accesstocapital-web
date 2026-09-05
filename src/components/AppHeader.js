@@ -27,6 +27,10 @@ const QUICK_LINKS = [
 // here" and isn't a link.
 export default function AppHeader({ user, breadcrumbs = [] }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  // Admin link only ever shown to an account with is_admin=true — the real
+  // gate is still the backend's 403 on every /api/admin/* call, this is
+  // just so a non-admin never even sees the link.
+  const quickLinks = user?.is_admin ? [...QUICK_LINKS, { label: 'Admin Portal', href: '/admin' }] : QUICK_LINKS
 
   return (
     <header className="bg-white border-b border-lightgray">
@@ -47,7 +51,7 @@ export default function AppHeader({ user, breadcrumbs = [] }) {
             </button>
             {menuOpen && (
               <div className="absolute left-0 mt-2 w-60 bg-white border border-lightgray z-10">
-                {QUICK_LINKS.map((link) => (
+                {quickLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
