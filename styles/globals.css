@@ -183,22 +183,22 @@ button {
   padding: 14px 28px;
 }
 
-/* Primary CTA: solid navy, gold appears only as a thin accent line on hover.
-   Gold as a fill/glow read as a promo button, not a boutique one. */
+/* Primary CTA: solid dark gold fill — the site's main "luxury" signal,
+   used for every primary action and page title. */
 .btn-primary {
-  background-color: #1A1817;
+  background-color: #7A6B4C;
   color: #F7F4EF;
   font-weight: 500;
   border-bottom: 1px solid transparent;
 }
 
 .btn-primary:hover {
-  background-color: #10131f;
-  border-bottom: 1px solid #7A6B4C;
+  background-color: #63563D;
+  border-bottom: 1px solid #1A1817;
 }
 
 .btn-primary:active {
-  background-color: #1A1817;
+  background-color: #7A6B4C;
 }
 
 /* Navy button (secondary) */

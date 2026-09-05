@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { AvatarLogo } from '../src/components/LogoComponent'
-import { useAuthGuard, logout } from '../src/lib/auth'
+import AppHeader from '../src/components/AppHeader'
+import { useAuthGuard } from '../src/lib/auth'
 
 // Every tool lists itself here under a plain-English category. A category
 // only renders once it has at least one tool in it — add a new tool to a
@@ -44,6 +44,44 @@ const TOOL_CATEGORIES = [
         description: 'See net cash movement by operating, investing, and financing activity for any year.',
         href: '/tools/cash-flow',
         cta: 'View Statement →'
+      },
+      {
+        icon: '📋',
+        name: 'Vendor & AP Management',
+        description: 'Track vendors, bills you owe, and payments — with an aging report so nothing slips past due.',
+        href: '/tools/vendor-ap',
+        cta: 'Open Vendor & AP →'
+      }
+    ]
+  },
+  {
+    name: 'Working with Clients',
+    tools: [
+      {
+        icon: '🤝',
+        name: 'Client Portal',
+        description: 'Share documents with clients through a private link — no account required on their end. Upload, download, and comment together.',
+        href: '/tools/client-portal',
+        cta: 'Open Client Portal →'
+      },
+      {
+        icon: '📅',
+        name: 'Scheduling',
+        description: 'Set your weekly availability and share a booking link. Clients pick an open time and book it themselves — no back-and-forth.',
+        href: '/tools/scheduling',
+        cta: 'Open Scheduling →'
+      }
+    ]
+  },
+  {
+    name: 'Markets',
+    tools: [
+      {
+        icon: '📈',
+        name: 'Trading Signals',
+        description: 'Educational technical-analysis signals for symbols you watch, delivered as alerts. Not investment advice — you always execute manually on your own broker.',
+        href: '/tools/trading-signals',
+        cta: 'Open Trading Signals →'
       }
     ]
   }
@@ -58,21 +96,11 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
-      <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <AvatarLogo size="sm" />
-            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
-          </Link>
-          <button onClick={logout} className="text-navy hover:text-gold">
-            Sign Out
-          </button>
-        </div>
-      </header>
+      <AppHeader user={user} />
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="mb-12">
-          <h1 className="font-garamond text-4xl font-medium text-navy mb-2">
+          <h1 className="font-garamond text-4xl font-medium text-gold mb-2">
             Welcome, {user.first_name}
           </h1>
           <p className="font-inter text-gray-600">Choose a service to get started.</p>

@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { AvatarLogo } from '../src/components/LogoComponent'
-import { useAuthGuard, authHeaders, logout } from '../src/lib/auth'
+import AppHeader from '../src/components/AppHeader'
+import { useAuthGuard, authHeaders } from '../src/lib/auth'
+
+const ACCOUNT_TYPE_LABELS = {
+  consumer: 'Personal',
+  business: 'Business',
+  both: 'Personal + Business'
+}
 
 export default function Accounts() {
   const { user, ready } = useAuthGuard()
+  const [accountType, setAccountType] = useState(null)
   const [consumerAccounts, setConsumerAccounts] = useState([])
   const [businesses, setBusinesses] = useState([])
   const [showAddBusiness, setShowAddBusiness] = useState(false)
@@ -16,6 +22,8 @@ export default function Accounts() {
   })
   const [addingBusiness, setAddingBusiness] = useState(false)
   const [addBusinessError, setAddBusinessError] = useState('')
+  const [addingConsumer, setAddingConsumer] = useState(false)
+  const [addConsumerError, setAddConsumerError] = useState('')
 
   useEffect(() => {
     if (ready) {
@@ -25,7 +33,13 @@ export default function Accounts() {
 
   const loadAccounts = async () => {
     try {
-      // The backend identifies the caller from the auth token — no user_id needed.
+      // /api/me is the source of truth for account_type — it can change
+      // after signup (adding a business or personal account later), so the
+      // copy cached in localStorage at login time may be stale.
+      const meRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/me`, { headers: authHeaders() })
+      const meData = await meRes.json()
+      setAccountType(meData.account_type)
+
       const consumerRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/consumer-accounts`,
         { headers: authHeaders() }
@@ -42,6 +56,30 @@ export default function Accounts() {
       setBusinesses(businessData.businesses || [])
     } catch (err) {
       console.error('Failed to load accounts:', err)
+    }
+  }
+
+  const handleAddConsumer = async () => {
+    setAddingConsumer(true)
+    setAddConsumerError('')
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consumer-accounts`, {
+        method: 'POST',
+        headers: authHeaders()
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        setAddConsumerError(data.detail || 'Could not add personal credit building.')
+        return
+      }
+
+      loadAccounts()
+    } catch (err) {
+      setAddConsumerError('Network error. Please try again.')
+    } finally {
+      setAddingConsumer(false)
     }
   }
 
@@ -90,40 +128,47 @@ export default function Accounts() {
 
   return (
     <div className="min-h-screen bg-offwhite">
-      {/* Header */}
-      <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <AvatarLogo size="sm" />
-            <span className="font-garamond text-navy font-medium">BlissPoint Access</span>
-          </Link>
-          <div className="flex items-center gap-6">
-            <span className="font-inter text-sm text-navy">
-              Welcome, {user.first_name}
-            </span>
-            <button onClick={logout} className="text-gold font-medium hover:underline">
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppHeader user={user} breadcrumbs={[{ label: 'Build Credit' }]} />
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 py-12">
-        <h1 className="font-garamond text-4xl font-medium text-navy mb-2">
-          Your Credit Accounts
-        </h1>
+        <div className="flex flex-wrap items-center gap-4 mb-2">
+          <h1 className="font-garamond text-4xl font-medium text-gold">
+            Your Credit Accounts
+          </h1>
+          {accountType && (
+            <span className="font-inter text-xs font-semibold uppercase tracking-wide px-3 py-1 bg-gold bg-opacity-10 text-gold">
+              {ACCOUNT_TYPE_LABELS[accountType] || accountType} Account
+            </span>
+          )}
+        </div>
         <p className="font-inter text-gray-600 mb-12">
           These accounts are automatically created and reported to the credit bureaus each month as part of your subscription.
         </p>
 
         {/* Consumer Accounts */}
         <div className="mb-12">
-          <h2 className="font-garamond text-2xl font-medium text-navy mb-6">
-            Consumer Accounts
-          </h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-garamond text-2xl font-medium text-navy">
+              Consumer Accounts
+            </h2>
+            {consumerAccounts.length === 0 && (
+              <button onClick={handleAddConsumer} disabled={addingConsumer} className="btn-primary disabled:opacity-50">
+                {addingConsumer ? 'Adding...' : '+ Add Personal Credit Building'}
+              </button>
+            )}
+          </div>
+
+          {addConsumerError && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm">
+              {addConsumerError}
+            </div>
+          )}
+
           {consumerAccounts.length === 0 ? (
-            <p className="font-inter text-gray-600">No consumer accounts yet</p>
+            <p className="font-inter text-gray-600">
+              No personal credit builder account yet — $10/month, reported to all major consumer bureaus.
+            </p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {consumerAccounts.map(account => (

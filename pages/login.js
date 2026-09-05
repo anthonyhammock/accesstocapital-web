@@ -71,7 +71,7 @@ export default function Login() {
       <main className="flex-1 flex items-center justify-center py-12">
         <div className="w-full max-w-md">
           <div className="bg-white border border-lightgray p-12">
-            <h1 className="font-garamond text-3xl font-medium text-navy mb-2">Welcome Back</h1>
+            <h1 className="font-garamond text-3xl font-medium text-gold mb-2">Welcome Back</h1>
             <p className="font-inter text-gray-600 mb-8">Sign in to your account</p>
 
             {error && (

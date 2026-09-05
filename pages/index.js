@@ -24,7 +24,7 @@ export default function Home() {
             Your All-in-One Small Business Ecosystem
           </p>
 
-          <h1 className="font-cormorant text-6xl md:text-7xl font-medium text-navy mb-8 leading-tight">
+          <h1 className="font-cormorant text-6xl md:text-7xl font-medium text-gold mb-8 leading-tight">
             BlissPoint Access
           </h1>
 
@@ -36,10 +36,10 @@ export default function Home() {
 
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/register">
-              <button className="btn-primary">Get Started</button>
+              <button className="btn-primary">Access Your BlissPoint</button>
             </Link>
             <Link href="/services">
-              <button className="btn-secondary">Access Your Bliss Point</button>
+              <button className="btn-secondary">Learn More...</button>
             </Link>
           </div>
         </main>

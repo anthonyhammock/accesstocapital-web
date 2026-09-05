@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { AvatarLogo } from '../../src/components/LogoComponent'
-import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
+import AppHeader from '../../src/components/AppHeader'
+import { useAuthGuard, authHeaders } from '../../src/lib/auth'
 
 const currentYear = new Date().getFullYear()
 const YEAR_OPTIONS = [currentYear, currentYear - 1, currentYear - 2]
@@ -161,23 +161,12 @@ export default function Bookkeeping() {
 
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
-      <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <AvatarLogo size="sm" />
-            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
-          </Link>
-          <div className="flex items-center gap-6">
-            <span className="font-inter text-sm text-navy">Welcome, {user.first_name}</span>
-            <button onClick={logout} className="text-navy hover:text-gold">Sign Out</button>
-          </div>
-        </div>
-      </header>
+      <AppHeader user={user} breadcrumbs={[{ label: 'Money & Bookkeeping' }, { label: 'Bookkeeping' }]} />
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
           <div>
-            <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Bookkeeping</h1>
+            <h1 className="font-garamond text-4xl font-medium text-gold mb-2">Bookkeeping</h1>
             <p className="font-inter text-gray-600">
               Every transaction here is saved to your account automatically — nothing to export
               unless you want a copy.
