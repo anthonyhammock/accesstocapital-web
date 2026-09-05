@@ -25,15 +25,24 @@ const wordmarkPx = { sm: 16, md: 20, lg: 26, xl: 36 };
 // stays perfectly aligned to the glyph at any size.
 const RisingStrokeMark = ({ size = 40, color = '#1A1817', accent = '#8A7B5C', className = '' }) => {
   const scale = size / 550;
+  // The glyph is scaled down from a 550px reference box, but a stroke width
+  // and dot radius scaled by the same factor shrink below a visible pixel
+  // at icon sizes (e.g. 3 * 28/550 ≈ 0.15px) and disappear entirely. Draw
+  // the SVG separately, in real pixel space, with coordinates pre-scaled
+  // for alignment but a floored line weight so the mark stays visible.
+  const strokeWidth = Math.max(1.25, size * 0.045);
+  const dotRadius = Math.max(1.5, size * 0.055);
+  const pathD = `M${438 * scale} ${56 * scale} C ${452 * scale} ${46 * scale}, ${465 * scale} ${38 * scale}, ${485 * scale} ${22 * scale}`;
+
   return (
     <div className={className} style={{ width: size, height: size, position: 'relative', flexShrink: 0 }}>
       <div style={{ width: 550, height: 550, position: 'relative', transform: `scale(${scale})`, transformOrigin: 'top left' }}>
         <span style={{ fontFamily: "'Pinyon Script', cursive", fontSize: 420, color, lineHeight: 1, position: 'absolute', top: 40, left: 20 }}>B</span>
-        <svg width="550" height="550" style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible' }} viewBox="0 0 550 550" fill="none">
-          <path d="M438 56 C 452 46, 465 38, 485 22" stroke={color} strokeWidth="3" strokeLinecap="round" fill="none" />
-          <circle cx="485" cy="22" r="6" fill={accent} />
-        </svg>
       </div>
+      <svg width={size} height={size} style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible' }} fill="none">
+        <path d={pathD} stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" fill="none" />
+        <circle cx={485 * scale} cy={22 * scale} r={dotRadius} fill={accent} />
+      </svg>
     </div>
   );
 };

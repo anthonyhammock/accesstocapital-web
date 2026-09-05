@@ -75,8 +75,11 @@ p {
   margin-bottom: 16px;
 }
 
-/* Small text for captions */
-small, .text-sm {
+/* Small text for captions. Deliberately scoped to the `small` element only —
+   `.text-sm` is Tailwind's font-size utility and must stay color-agnostic,
+   or it silently overrides any text-color utility paired with it (equal
+   specificity, later in the cascade) sitewide. */
+small {
   font-size: 14px;
   color: #1A1817;
   line-height: 1.5;
