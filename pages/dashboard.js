@@ -32,7 +32,7 @@ export default function Dashboard() {
           <p className="font-inter text-gray-600">Choose a service to get started.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Tax Platform */}
           <div className="bg-white border border-lightgray p-8 hover:border-navy transition">
             <Link href="/tax/upload" className="cursor-pointer">
@@ -46,6 +46,17 @@ export default function Dashboard() {
               <p className="text-gold font-semibold mt-2">Or answer a few questions instead →</p>
             </Link>
           </div>
+
+          {/* Bookkeeping */}
+          <Link href="/tools/bookkeeping">
+            <div className="bg-white border border-lightgray p-8 hover:border-navy cursor-pointer transition">
+              <h2 className="font-garamond text-2xl text-navy mb-4">🧾 Bookkeeping</h2>
+              <p className="font-inter text-gray-600 mb-6">
+                Track income and expenses in one ledger, saved to your account automatically and ready to download anytime.
+              </p>
+              <p className="text-gold font-semibold">Open Ledger →</p>
+            </div>
+          </Link>
 
           {/* Credit Builder */}
           <Link href="/accounts">
