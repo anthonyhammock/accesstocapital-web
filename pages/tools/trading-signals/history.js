@@ -2,6 +2,19 @@ import { useState, useEffect } from 'react'
 import AppHeader from '../../../src/components/AppHeader'
 import { useAuthGuard, authHeaders } from '../../../src/lib/auth'
 
+const OUTCOME_LABELS = {
+  pending: 'Pending',
+  target_hit: 'Hit Target',
+  stop_hit: 'Hit Stop',
+  expired: 'Expired',
+}
+const OUTCOME_STYLES = {
+  pending: 'bg-gray-100 text-gray-600',
+  target_hit: 'bg-gold bg-opacity-10 text-gold',
+  stop_hit: 'bg-error bg-opacity-10 text-error',
+  expired: 'bg-gray-100 text-gray-400',
+}
+
 export default function TradingSignalsHistory() {
   const { user, ready } = useAuthGuard()
   const [signals, setSignals] = useState([])
@@ -65,10 +78,18 @@ export default function TradingSignalsHistory() {
                     </span>
                     <h3 className="font-garamond text-lg text-navy">{s.symbol}</h3>
                     <span className="font-inter text-xs text-gray-500">{s.confidence}% · {s.timeframe} · {s.market_condition}</span>
+                    <span className={`font-inter text-xs uppercase px-2 py-1 ${OUTCOME_STYLES[s.outcome] || OUTCOME_STYLES.pending}`}>
+                      {OUTCOME_LABELS[s.outcome] || s.outcome}
+                    </span>
                   </div>
                   <span className="font-inter text-xs text-gray-500">{new Date(s.created_at).toLocaleString()}</span>
                 </div>
-                <p className="font-inter text-sm text-gray-600">{s.reason}</p>
+                {s.explanation && s.explanation.length > 0 && (
+                  <ul className="font-inter text-sm text-navy space-y-1 list-disc list-inside mb-2">
+                    {s.explanation.map((point, i) => <li key={i}>{point}</li>)}
+                  </ul>
+                )}
+                <p className="font-inter text-xs text-gray-500">{s.reason}</p>
               </div>
             ))}
           </div>

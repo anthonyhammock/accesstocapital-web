@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import AppHeader from '../../../src/components/AppHeader'
 import { useAuthGuard, authHeaders } from '../../../src/lib/auth'
+import { TickerTape, MiniChart } from '../../../src/components/TradingViewWidgets'
 
 const TIMEFRAMES = ['5min', '15min', '1h', '1day']
 const STRATEGIES = ['hybrid', 'momentum', 'mean_reversion', 'breakout']
@@ -28,12 +29,21 @@ function InfoTooltip({ children }) {
   )
 }
 
+function tierForConfidence(successRate, confidence) {
+  if (!successRate?.by_confidence_tier) return null
+  return successRate.by_confidence_tier.find((t) => {
+    const [lo, hi] = t.confidence_range.replace('%', '').split('-').map(Number)
+    return confidence >= lo && confidence <= hi
+  })
+}
+
 export default function TradingSignalsDashboard() {
   const { user, ready } = useAuthGuard()
   const [status, setStatus] = useState(null)
   const [watchlist, setWatchlist] = useState([])
   const [signals, setSignals] = useState([])
   const [preferences, setPreferences] = useState(null)
+  const [successRate, setSuccessRate] = useState(null)
   const [loadingData, setLoadingData] = useState(true)
 
   const [symbol, setSymbol] = useState('')
@@ -60,16 +70,18 @@ export default function TradingSignalsDashboard() {
   const loadAll = async () => {
     setLoadingData(true)
     try {
-      const [statusRes, watchlistRes, signalsRes, prefsRes] = await Promise.all([
+      const [statusRes, watchlistRes, signalsRes, prefsRes, successRateRes] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/trading/status`, { headers: authHeaders() }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/trading/watchlist`, { headers: authHeaders() }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/trading/signals`, { headers: authHeaders() }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/trading/preferences`, { headers: authHeaders() }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/trading/success-rate`, { headers: authHeaders() }),
       ])
       setStatus(await statusRes.json())
       setWatchlist((await watchlistRes.json()).entries || [])
       setSignals((await signalsRes.json()).signals || [])
       setPreferences(await prefsRes.json())
+      setSuccessRate(successRateRes.ok ? await successRateRes.json() : null)
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/trading/signals/mark-viewed`, {
         method: 'POST', headers: authHeaders(),
       })
@@ -186,6 +198,12 @@ export default function TradingSignalsDashboard() {
     <div className="min-h-screen bg-offwhite flex flex-col">
       <AppHeader user={user} breadcrumbs={[{ label: 'Trading Signals' }]} />
 
+      {watchlist.length > 0 && (
+        <div className="border-b border-lightgray bg-white">
+          <TickerTape symbols={watchlist.map((w) => w.symbol)} />
+        </div>
+      )}
+
       <main className="flex-1 max-w-5xl mx-auto px-6 py-12 w-full">
         <h1 className="font-garamond text-4xl font-medium text-navy mb-2">Trading Signals</h1>
         <p className="font-inter text-gray-600 mb-4">
@@ -207,6 +225,29 @@ export default function TradingSignalsDashboard() {
               <strong>Beta:</strong> live market data isn't connected yet, so no signals will be
               generated until that's set up. Your watchlist and alert settings are saved and ready.
             </p>
+          </div>
+        )}
+
+        {successRate?.overall?.sample_size > 0 && (
+          <div className="bg-white border border-lightgray p-6 mb-10">
+            <h2 className="font-garamond text-lg text-navy mb-3">Historical Track Record</h2>
+            <p className="font-inter text-sm text-gray-600 mb-4">
+              Of {successRate.overall.sample_size} past signals that have since resolved (hit either
+              their target or their stop loss), <strong className="text-navy">{successRate.overall.hit_rate}%</strong> hit
+              their target first.
+            </p>
+            <div className="grid grid-cols-3 gap-4">
+              {successRate.by_confidence_tier.map((tier) => (
+                <div key={tier.confidence_range} className="border border-lightgray p-3 text-center">
+                  <p className="font-inter text-xs text-gray-500 mb-1">{tier.confidence_range} confidence</p>
+                  <p className="font-garamond text-xl text-navy">
+                    {tier.hit_rate !== null ? `${tier.hit_rate}%` : 'Not enough data'}
+                  </p>
+                  <p className="font-inter text-xs text-gray-400">n={tier.sample_size}</p>
+                </div>
+              ))}
+            </div>
+            <p className="font-inter text-xs text-gray-500 mt-4">{successRate.disclaimer}</p>
           </div>
         )}
 
@@ -287,7 +328,9 @@ export default function TradingSignalsDashboard() {
           <p className="font-inter text-gray-600 mb-10">No active signals right now.</p>
         ) : (
           <div className="space-y-4 mb-10">
-            {signals.map((s) => (
+            {signals.map((s) => {
+              const tier = tierForConfidence(successRate, s.confidence)
+              return (
               <div key={s.id} className="bg-white border border-lightgray p-6">
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
                   <div className="flex items-center gap-3">
@@ -304,7 +347,27 @@ export default function TradingSignalsDashboard() {
                   <div><span className="text-gray-500">Target:</span> <span className="text-navy font-medium">${s.target_price}</span></div>
                   <div><span className="text-gray-500">Stop Loss:</span> <span className="text-navy font-medium">${s.stop_loss}</span></div>
                 </div>
-                <p className="font-inter text-sm text-gray-600 mb-4">{s.reason}</p>
+                <div className="mb-4">
+                  <MiniChart symbol={s.symbol} />
+                </div>
+
+                {s.explanation && s.explanation.length > 0 && (
+                  <div className="bg-offwhite border-l-4 border-gold p-4 mb-3">
+                    <p className="font-inter text-xs uppercase tracking-wide text-gold mb-2">Why this signal?</p>
+                    <ul className="font-inter text-sm text-navy space-y-1 list-disc list-inside">
+                      {s.explanation.map((point, i) => <li key={i}>{point}</li>)}
+                    </ul>
+                  </div>
+                )}
+                <p className="font-inter text-xs text-gray-500 mb-3">{s.reason}</p>
+
+                {tier && (
+                  <p className="font-inter text-xs text-gray-500 mb-4">
+                    {tier.hit_rate !== null
+                      ? `Signals in this ${tier.confidence_range} confidence range have historically hit their target ${tier.hit_rate}% of the time (based on ${tier.sample_size} past signals).`
+                      : `Not enough historical data yet for signals in this ${tier.confidence_range} confidence range.`}
+                  </p>
+                )}
 
                 {loggingSignalId === s.id ? (
                   <div className="flex flex-wrap items-end gap-3 border-t border-lightgray pt-4">
@@ -328,7 +391,8 @@ export default function TradingSignalsDashboard() {
                   </button>
                 )}
               </div>
-            ))}
+              )
+            })}
           </div>
         )}
 
