@@ -46,6 +46,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'Scheduling & Booking Links',
+    price: 'Included',
+    description:
+      'Set your weekly availability once and share a booking link — clients see your real open times in their own timezone and book themselves, no back-and-forth.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:

@@ -56,6 +56,13 @@ const TOOL_CATEGORIES = [
         description: 'Share documents with clients through a private link — no account required on their end. Upload, download, and comment together.',
         href: '/tools/client-portal',
         cta: 'Open Client Portal →'
+      },
+      {
+        icon: '📅',
+        name: 'Scheduling',
+        description: 'Set your weekly availability and share a booking link. Clients pick an open time and book it themselves — no back-and-forth.',
+        href: '/tools/scheduling',
+        cta: 'Open Scheduling →'
       }
     ]
   }
