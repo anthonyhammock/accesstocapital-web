@@ -179,7 +179,7 @@ export default function Bookkeeping() {
           </Link>
         </div>
 
-        <div className="flex items-center gap-4 my-8">
+        <div className="flex flex-wrap items-center gap-4 my-8">
           <label className="font-inter text-sm font-medium text-navy">Year</label>
           <select
             value={year}
@@ -190,6 +190,9 @@ export default function Bookkeeping() {
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
+          <Link href="/tools/profit-and-loss" className="font-inter text-sm text-gold hover:underline ml-auto">
+            View Profit &amp; Loss Statement →
+          </Link>
         </div>
 
         {summary && (

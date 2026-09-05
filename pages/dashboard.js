@@ -58,6 +58,17 @@ export default function Dashboard() {
             </div>
           </Link>
 
+          {/* Profit & Loss */}
+          <Link href="/tools/profit-and-loss">
+            <div className="bg-white border border-lightgray p-8 hover:border-navy cursor-pointer transition">
+              <h2 className="font-garamond text-2xl text-navy mb-4">📈 Profit &amp; Loss</h2>
+              <p className="font-inter text-gray-600 mb-6">
+                See revenue, expenses by category, and net income — built automatically from your bookkeeping ledger.
+              </p>
+              <p className="text-gold font-semibold">View Statement →</p>
+            </div>
+          </Link>
+
           {/* Credit Builder */}
           <Link href="/accounts">
             <div className="bg-white border border-lightgray p-8 hover:border-navy cursor-pointer transition">
