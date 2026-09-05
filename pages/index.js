@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { HeaderLogo } from '../src/components/LogoComponent'
 
-const heroGradient = 'linear-gradient(180deg, #1A1817 0%, #3A342E 45%, #8A7B5C 70%, #C9C0B3 88%, #F7F4EF 100%)'
+const heroGradient = 'linear-gradient(180deg, #8A7B5C 0%, #C9C0B3 55%, #F7F4EF 100%)'
 
 export default function Home() {
   return (
@@ -9,24 +9,24 @@ export default function Home() {
       {/* Hero */}
       <div style={{ background: heroGradient }}>
         <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-          <HeaderLogo size="md" reversed />
+          <HeaderLogo size="md" />
           <nav className="flex gap-8">
-            <Link href="/login" className="font-inter text-sm text-offwhite hover:text-platinum transition-colors">
+            <Link href="/login" className="font-inter text-sm text-navy hover:text-gold transition-colors">
               Sign In
             </Link>
           </nav>
         </header>
 
         <main className="max-w-4xl mx-auto px-6 pt-16 pb-40 text-center flex flex-col items-center">
-          <p className="font-inter text-xs tracking-[0.25em] uppercase text-platinum mb-8">
+          <p className="font-inter text-xs tracking-[0.25em] uppercase text-navy mb-8">
             Your All-in-One Small Business Ecosystem
           </p>
 
-          <h1 className="font-cormorant text-6xl md:text-7xl font-medium text-offwhite mb-8 leading-tight">
+          <h1 className="font-cormorant text-6xl md:text-7xl font-medium text-navy mb-8 leading-tight">
             BlissPoint Access
           </h1>
 
-          <p className="font-inter text-lg text-platinum max-w-2xl leading-relaxed mb-12">
+          <p className="font-inter text-lg text-navy max-w-2xl leading-relaxed mb-12">
             Automated personal and business credit-building, simplified access to all federal
             tax deductions, and the next chapter of essential business tools — one ecosystem,
             built for owners who expect more for their businesses.
@@ -37,7 +37,7 @@ export default function Home() {
               <button className="btn-primary">Get Started</button>
             </Link>
             <Link href="/services">
-              <button className="btn-outline-light">Access Your Bliss Point</button>
+              <button className="btn-secondary">Access Your Bliss Point</button>
             </Link>
           </div>
         </main>
