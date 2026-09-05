@@ -51,6 +51,13 @@ const TOOL_CATEGORIES = [
         description: 'Track vendors, bills you owe, and payments — with an aging report so nothing slips past due.',
         href: '/tools/vendor-ap',
         cta: 'Open Vendor & AP →'
+      },
+      {
+        icon: '🧮',
+        name: 'Invoicing',
+        description: 'Create professional invoices, send a shareable link, and track payments as they come in.',
+        href: '/tools/invoicing',
+        cta: 'Open Invoicing →'
       }
     ]
   },

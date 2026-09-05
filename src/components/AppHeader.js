@@ -18,6 +18,7 @@ const QUICK_LINKS = [
   { label: 'Scheduling', href: '/tools/scheduling' },
   { label: 'Trading Signals', href: '/tools/trading-signals' },
   { label: 'Vendor & AP Management', href: '/tools/vendor-ap' },
+  { label: 'Invoicing', href: '/tools/invoicing' },
 ]
 
 // breadcrumbs: an array of { label, href? } for everything AFTER "Dashboard"
