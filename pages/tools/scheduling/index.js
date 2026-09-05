@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import AppHeader from '../../../src/components/AppHeader'
 import { useAuthGuard, authHeaders } from '../../../src/lib/auth'
+
+const PROVIDER_LABELS = { google: 'Google Calendar', microsoft: 'Outlook / Microsoft 365' }
 
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -33,6 +36,7 @@ const emptyDays = () =>
 
 export default function SchedulingSettings() {
   const { user, ready } = useAuthGuard()
+  const router = useRouter()
   const [settings, setSettings] = useState(null)
   const [days, setDays] = useState(emptyDays())
   const [bookings, setBookings] = useState([])
@@ -43,6 +47,10 @@ export default function SchedulingSettings() {
   const [copied, setCopied] = useState(false)
   const [linkBusy, setLinkBusy] = useState(false)
   const [timezoneOptions] = useState(getTimezoneOptions)
+  const [calendarProviders, setCalendarProviders] = useState({ google: false, microsoft: false })
+  const [calendarConnections, setCalendarConnections] = useState([])
+  const [calendarBusy, setCalendarBusy] = useState(null)
+  const [calendarNotice, setCalendarNotice] = useState(null)
 
   useEffect(() => {
     if (ready) {
@@ -50,16 +58,32 @@ export default function SchedulingSettings() {
     }
   }, [ready])
 
+  useEffect(() => {
+    if (!router.isReady) return
+    const { calendar_connected, calendar_error } = router.query
+    if (calendar_connected) {
+      setCalendarNotice({ type: 'success', text: `${PROVIDER_LABELS[calendar_connected] || calendar_connected} connected.` })
+      router.replace('/tools/scheduling', undefined, { shallow: true })
+    } else if (calendar_error) {
+      setCalendarNotice({ type: 'error', text: `Could not connect ${PROVIDER_LABELS[calendar_error] || calendar_error}. Please try again.` })
+      router.replace('/tools/scheduling', undefined, { shallow: true })
+    }
+  }, [router.isReady, router.query])
+
   const loadAll = async () => {
     setLoadingData(true)
     try {
-      const [settingsRes, bookingsRes] = await Promise.all([
+      const [settingsRes, bookingsRes, providersRes, connectionsRes] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/settings`, { headers: authHeaders() }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/bookings`, { headers: authHeaders() }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/calendar/providers`, { headers: authHeaders() }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/calendar/connections`, { headers: authHeaders() }),
       ])
       const settingsData = await settingsRes.json()
       const bookingsData = await bookingsRes.json()
       setSettings(settingsData)
+      setCalendarProviders(await providersRes.json())
+      setCalendarConnections((await connectionsRes.json()).connections || [])
 
       const nextDays = emptyDays()
       for (const rule of settingsData.availability || []) {
@@ -169,6 +193,45 @@ export default function SchedulingSettings() {
     }
   }
 
+  const handleConnectCalendar = async (provider) => {
+    setCalendarBusy(provider)
+    setCalendarNotice(null)
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/calendar/connect/${provider}`, {
+        headers: authHeaders(),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setCalendarNotice({ type: 'error', text: data.detail || 'Could not start connecting that calendar.' })
+        return
+      }
+      // A real OAuth consent screen must happen in the top-level browser
+      // context (not fetched via XHR), so this is a full page navigation —
+      // the provider redirects back to our own callback URL when done.
+      window.location.href = data.authorization_url
+    } catch (err) {
+      setCalendarNotice({ type: 'error', text: 'Network error. Please try again.' })
+    } finally {
+      setCalendarBusy(null)
+    }
+  }
+
+  const handleDisconnectCalendar = async (connectionId) => {
+    if (!confirm('Disconnect this calendar? Its busy times will no longer block your booking page.')) return
+    setCalendarBusy(connectionId)
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/calendar/connections/${connectionId}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+      })
+      await loadAll()
+    } catch (err) {
+      console.error('Failed to disconnect calendar:', err)
+    } finally {
+      setCalendarBusy(null)
+    }
+  }
+
   if (!ready || loadingData || !settings) {
     return <div>Loading...</div>
   }
@@ -261,6 +324,63 @@ export default function SchedulingSettings() {
             </div>
           </div>
         </div>
+
+        {(calendarProviders.google || calendarProviders.microsoft) && (
+          <div className="bg-white border border-lightgray p-8 mb-10">
+            <h2 className="font-garamond text-xl text-navy mb-2">Connected Calendars</h2>
+            <p className="font-inter text-sm text-gray-600 mb-6">
+              Sync a calendar so times you're already busy elsewhere never show up as bookable —
+              we only read busy/free time, nothing is ever added, edited, or shared from your calendar.
+            </p>
+
+            {calendarNotice && (
+              <p className={`font-inter text-sm mb-4 ${calendarNotice.type === 'error' ? 'text-error' : 'text-gold'}`}>
+                {calendarNotice.text}
+              </p>
+            )}
+
+            {calendarConnections.length > 0 && (
+              <div className="space-y-3 mb-6">
+                {calendarConnections.map((c) => (
+                  <div key={c.id} className="flex items-center justify-between border border-lightgray px-4 py-3">
+                    <div>
+                      <p className="font-inter text-sm font-medium text-navy">{PROVIDER_LABELS[c.provider] || c.provider}</p>
+                      {c.provider_email && <p className="font-inter text-xs text-gray-500">{c.provider_email}</p>}
+                    </div>
+                    <button
+                      onClick={() => handleDisconnectCalendar(c.id)}
+                      disabled={calendarBusy === c.id}
+                      className="font-inter text-sm text-error hover:underline disabled:opacity-50"
+                    >
+                      Disconnect
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-3">
+              {calendarProviders.google && !calendarConnections.some((c) => c.provider === 'google') && (
+                <button
+                  onClick={() => handleConnectCalendar('google')}
+                  disabled={calendarBusy === 'google'}
+                  className="btn-secondary text-sm disabled:opacity-50"
+                >
+                  {calendarBusy === 'google' ? 'Connecting...' : '+ Connect Google Calendar'}
+                </button>
+              )}
+              {calendarProviders.microsoft && !calendarConnections.some((c) => c.provider === 'microsoft') && (
+                <button
+                  onClick={() => handleConnectCalendar('microsoft')}
+                  disabled={calendarBusy === 'microsoft'}
+                  className="btn-secondary text-sm disabled:opacity-50"
+                >
+                  {calendarBusy === 'microsoft' ? 'Connecting...' : '+ Connect Outlook / Microsoft 365'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="bg-white border border-lightgray p-8 mb-10">
           <h2 className="font-garamond text-xl text-navy mb-6">Weekly Availability</h2>
