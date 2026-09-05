@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { HeaderLogo } from '../src/components/LogoComponent'
+import { HeaderLogo, AvatarLogo } from '../src/components/LogoComponent'
 
 const heroGradient = 'linear-gradient(180deg, #8A7B5C 0%, #C9C0B3 55%, #F7F4EF 100%)'
 
@@ -18,6 +18,8 @@ export default function Home() {
         </header>
 
         <main className="max-w-4xl mx-auto px-6 pt-16 pb-40 text-center flex flex-col items-center">
+          <AvatarLogo size="lg" className="mb-6" />
+
           <p className="font-inter text-xs tracking-[0.25em] uppercase text-navy mb-8">
             Your All-in-One Small Business Ecosystem
           </p>

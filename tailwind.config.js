@@ -14,7 +14,10 @@ module.exports = {
         // existing text-navy/bg-gold/etc. class across the app picks up
         // the new brand colors without a sitewide class rename.
         navy: '#1A1817',      // Warm Black (was navy blue)
-        gold: '#8A7B5C',      // Brass Whisper (was gold) — accent, used sparingly
+        gold: '#7A6B4C',      // Brass Whisper (was gold) — accent, used sparingly.
+                               // Darkened from #8A7B5C: that shade measured ~4.14:1
+                               // against white, under the 4.5:1 AA floor for text.
+                               // This value holds ~5.2:1.
         offwhite: '#F7F4EF',  // Ivory White
         lightgray: '#E5E0D5', // platinum-tinted hairline borders
         platinum: '#C9C0B3',  // Platinum Champagne — dark-background accent/hairlines
