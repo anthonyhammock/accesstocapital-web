@@ -47,7 +47,7 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         <div className="bg-lightgray" style={{ aspectRatio: '4 / 5' }}>
           <img
-            src="/images/business-owner.jpg"
+            src="/images/business-owner.png"
             alt="A successful Black business owner"
             className="w-full h-full object-cover"
           />
