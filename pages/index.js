@@ -1,5 +1,37 @@
+import { useState } from 'react'
 import Link from 'next/link'
 import { HeaderLogo, AvatarLogo } from '../src/components/LogoComponent'
+
+// Drop the real file at public/videos/homepage-hero.mp4 and it autoplays —
+// until then (no video file exists yet), onError falls back to the static
+// photo below rather than showing a broken player.
+function HeroMedia() {
+  const [videoFailed, setVideoFailed] = useState(false)
+
+  if (videoFailed) {
+    return (
+      <img
+        src="/images/business-owner.png"
+        alt="A successful Black business owner"
+        className="w-full h-full object-cover"
+      />
+    )
+  }
+
+  return (
+    <video
+      className="w-full h-full object-cover"
+      poster="/images/business-owner.png"
+      autoPlay
+      muted
+      loop
+      playsInline
+      onError={() => setVideoFailed(true)}
+    >
+      <source src="/videos/homepage-hero.mp4" type="video/mp4" />
+    </video>
+  )
+}
 
 const heroGradient = 'linear-gradient(180deg, #8A7B5C 0%, #C9C0B3 55%, #F7F4EF 100%)'
 
@@ -48,11 +80,7 @@ export default function Home() {
       {/* Featured story */}
       <section className="max-w-6xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         <div className="bg-lightgray" style={{ aspectRatio: '4 / 5' }}>
-          <img
-            src="/images/business-owner.png"
-            alt="A successful Black business owner"
-            className="w-full h-full object-cover"
-          />
+          <HeroMedia />
         </div>
 
         <div>
