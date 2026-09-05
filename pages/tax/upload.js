@@ -1,21 +1,15 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { HeaderLogo } from '../../src/components/LogoComponent'
+import { AvatarLogo } from '../../src/components/LogoComponent'
+import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
 
 export default function TaxUpload() {
-  const [user, setUser] = useState(null)
+  const { ready } = useAuthGuard()
   const [file, setFile] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [transactions, setTransactions] = useState([])
   const [uploadComplete, setUploadComplete] = useState(false)
   const [error, setError] = useState('')
-
-  React.useEffect(() => {
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-  }, [])
 
   const handleFileSelect = (e) => {
     setFile(e.target.files[0])
@@ -33,11 +27,11 @@ export default function TaxUpload() {
 
     try {
       const formData = new FormData()
-      formData.append('user_id', user.id)
       formData.append('file', file)
-      
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tax/upload-csv`, {
         method: 'POST',
+        headers: authHeaders(),
         body: formData
       })
 
@@ -60,18 +54,19 @@ export default function TaxUpload() {
     }
   }
 
+  if (!ready) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
       <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <HeaderLogo size="sm" />
-            <span className="font-garamond font-bold text-navy text-lg">BlissPoint Tax</span>
+            <AvatarLogo size="sm" />
+            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
-          <button onClick={() => {
-            localStorage.removeItem('user')
-            window.location.href = '/login'
-          }} className="text-navy hover:text-gold">Sign Out</button>
+          <button onClick={logout} className="text-navy hover:text-gold">Sign Out</button>
         </div>
       </header>
 
@@ -80,7 +75,7 @@ export default function TaxUpload() {
         <p className="font-inter text-gray-600 mb-12">We'll automatically categorize your business expenses.</p>
 
         {!uploadComplete && (
-          <div className="bg-white border border-lightgray rounded-lg p-12 mb-8">
+          <div className="bg-white border border-lightgray p-12 mb-8">
             <div className="text-center">
               <h2 className="font-garamond text-2xl text-navy mb-3">Choose CSV File</h2>
               <p className="font-inter text-gray-600 mb-6">Chase, Amex, Bank of America, or generic CSV</p>
@@ -88,21 +83,21 @@ export default function TaxUpload() {
               <div className="mb-6">
                 <label className="relative inline-block cursor-pointer">
                   <input type="file" accept=".csv" onChange={handleFileSelect} className="hidden" />
-                  <span className="inline-block px-8 py-3 bg-navy text-white rounded font-medium hover:bg-opacity-90">
+                  <span className="inline-block px-8 py-3 bg-navy text-white hover:bg-opacity-90">
                     Select File
                   </span>
                 </label>
               </div>
 
               {file && (
-                <div className="mb-6 p-4 bg-offwhite rounded border border-lightgray">
+                <div className="mb-6 p-4 bg-offwhite border border-lightgray">
                   <p className="font-inter text-navy font-medium">{file.name}</p>
                   <p className="font-inter text-sm text-gray-600">{(file.size / 1024).toFixed(1)} KB</p>
                 </div>
               )}
 
               {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm">
                   {error}
                 </div>
               )}
@@ -110,7 +105,7 @@ export default function TaxUpload() {
               <button
                 onClick={handleUpload}
                 disabled={!file || uploading}
-                className="px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90 disabled:opacity-50"
+                className="px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90 disabled:opacity-50"
               >
                 {uploading ? 'Uploading...' : 'Upload & Categorize'}
               </button>
@@ -119,7 +114,7 @@ export default function TaxUpload() {
         )}
 
         {uploadComplete && transactions.length > 0 && (
-          <div className="bg-white border border-lightgray rounded-lg p-8 mb-8">
+          <div className="bg-white border border-lightgray p-8 mb-8">
             <h2 className="font-garamond text-2xl text-navy mb-6">Imported Transactions ({transactions.length})</h2>
 
             <div className="overflow-x-auto mb-6">
@@ -140,7 +135,7 @@ export default function TaxUpload() {
                       <td className="px-6 py-4 font-inter text-gray-700">{tx.merchant}</td>
                       <td className="px-6 py-4 font-inter font-medium text-navy">${Math.abs(tx.amount).toFixed(2)}</td>
                       <td className="px-6 py-4">
-                        <span className="inline-block px-3 py-1 bg-gold bg-opacity-10 text-gold text-xs font-medium rounded">
+                        <span className="inline-block px-3 py-1 bg-gold bg-opacity-10 text-gold text-xs font-medium">
                           {tx.category || 'Uncategorized'}
                         </span>
                       </td>
@@ -155,7 +150,7 @@ export default function TaxUpload() {
 
             <div className="flex gap-4">
               <Link href="/tax/calculate">
-                <button className="px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90">
+                <button className="px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90">
                   Continue to Calculation
                 </button>
               </Link>
@@ -163,7 +158,7 @@ export default function TaxUpload() {
                 setUploadComplete(false)
                 setTransactions([])
                 setFile(null)
-              }} className="px-8 py-3 border border-lightgray text-navy rounded font-medium hover:bg-offwhite">
+              }} className="px-8 py-3 border border-lightgray text-navy font-medium hover:bg-offwhite">
                 Upload Different File
               </button>
             </div>

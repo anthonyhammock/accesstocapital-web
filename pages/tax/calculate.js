@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { HeaderLogo } from '../../src/components/LogoComponent'
+import { AvatarLogo } from '../../src/components/LogoComponent'
+import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
 
 export default function TaxCalculate() {
-  const [user, setUser] = useState(null)
+  const { ready } = useAuthGuard()
   const [entityType, setEntityType] = useState('SOLE_PROP')
   const [taxYear, setTaxYear] = useState(2026)
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState(null)
   const [error, setError] = useState('')
   const [officerWages, setOfficerWages] = useState(0)
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-  }, [])
 
   const handleCalculate = async () => {
     setLoading(true)
@@ -25,9 +19,8 @@ export default function TaxCalculate() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tax/calculate-deductions`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
-          user_id: user.id,
           tax_year: taxYear,
           entity_type: entityType,
           transactions: [],  // Will fetch from DB on backend
@@ -52,18 +45,19 @@ export default function TaxCalculate() {
     }
   }
 
+  if (!ready) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
       <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <HeaderLogo size="sm" />
-            <span className="font-garamond font-bold text-navy text-lg">BlissPoint Tax</span>
+            <AvatarLogo size="sm" />
+            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
-          <button onClick={() => {
-            localStorage.removeItem('user')
-            window.location.href = '/login'
-          }} className="text-navy hover:text-gold">Sign Out</button>
+          <button onClick={logout} className="text-navy hover:text-gold">Sign Out</button>
         </div>
       </header>
 
@@ -72,7 +66,7 @@ export default function TaxCalculate() {
         <p className="font-inter text-gray-600 mb-12">Configure your tax situation and review results.</p>
 
         {!results && (
-          <div className="bg-white border border-lightgray rounded-lg p-8 mb-8">
+          <div className="bg-white border border-lightgray p-8 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               <div>
                 <label className="font-inter text-sm font-medium text-navy block mb-2">Tax Year</label>
@@ -80,7 +74,7 @@ export default function TaxCalculate() {
                   type="number"
                   value={taxYear}
                   onChange={(e) => setTaxYear(parseInt(e.target.value))}
-                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                 />
               </div>
 
@@ -89,7 +83,7 @@ export default function TaxCalculate() {
                 <select
                   value={entityType}
                   onChange={(e) => setEntityType(e.target.value)}
-                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                 >
                   <option value="SOLE_PROP">Sole Proprietor (Schedule C)</option>
                   <option value="S_CORP">S-Corporation (Form 1120-S)</option>
@@ -105,14 +99,14 @@ export default function TaxCalculate() {
                     value={officerWages}
                     onChange={(e) => setOfficerWages(e.target.value)}
                     placeholder="50000"
-                    className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                    className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                   />
                 </div>
               )}
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm">
                 {error}
               </div>
             )}
@@ -120,7 +114,7 @@ export default function TaxCalculate() {
             <button
               onClick={handleCalculate}
               disabled={loading}
-              className="w-full px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90 disabled:opacity-50"
+              className="w-full px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90 disabled:opacity-50"
             >
               {loading ? 'Calculating...' : 'Calculate Deductions'}
             </button>
@@ -129,7 +123,7 @@ export default function TaxCalculate() {
 
         {results && (
           <div className="space-y-8">
-            <div className="bg-white border border-gold rounded-lg p-8">
+            <div className="bg-white border border-gold p-8">
               <h2 className="font-garamond text-3xl text-navy font-bold mb-4">
                 Total Deductions: <span className="text-gold">${results.total.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
               </h2>
@@ -138,7 +132,7 @@ export default function TaxCalculate() {
               </p>
             </div>
 
-            <div className="bg-white border border-lightgray rounded-lg p-8">
+            <div className="bg-white border border-lightgray p-8">
               <h3 className="font-garamond text-2xl text-navy font-medium mb-6">Form Line Breakdown</h3>
 
               <div className="space-y-4">
@@ -158,12 +152,12 @@ export default function TaxCalculate() {
 
             <div className="flex gap-4">
               <Link href="/tax/upload">
-                <button className="flex-1 px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90">
+                <button className="flex-1 px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90">
                   Upload Another File
                 </button>
               </Link>
               <Link href="/dashboard">
-                <button className="flex-1 px-8 py-3 border border-lightgray text-navy rounded font-medium hover:bg-offwhite">
+                <button className="flex-1 px-8 py-3 border border-lightgray text-navy font-medium hover:bg-offwhite">
                   Back to Dashboard
                 </button>
               </Link>

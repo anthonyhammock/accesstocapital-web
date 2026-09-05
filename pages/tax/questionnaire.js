@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { HeaderLogo } from '../../src/components/LogoComponent'
+import { AvatarLogo } from '../../src/components/LogoComponent'
+import { useAuthGuard, authHeaders, logout } from '../../src/lib/auth'
 
 export default function TaxQuestionnaire() {
-  const [user, setUser] = useState(null)
+  const { ready } = useAuthGuard()
   const [stage, setStage] = useState('basics') // 'basics' | 'questions' | 'results'
 
   const [questions, setQuestions] = useState([])
@@ -21,13 +22,6 @@ export default function TaxQuestionnaire() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [results, setResults] = useState(null)
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-  }, [])
 
   useEffect(() => {
     fetchQuestions()
@@ -98,9 +92,8 @@ export default function TaxQuestionnaire() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tax/submit-questionnaire`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
-          user_id: user.id,
           tax_year: taxYear,
           entity_type: entityType,
           answers: answerList,
@@ -133,25 +126,19 @@ export default function TaxQuestionnaire() {
     setStage('basics')
   }
 
-  if (!user) {
+  if (!ready) {
     return <div>Loading...</div>
   }
 
   return (
     <div className="min-h-screen bg-offwhite flex flex-col">
       <header className="bg-white border-b border-lightgray">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <HeaderLogo size="sm" />
-            <span className="font-garamond font-bold text-navy text-lg">BlissPoint Tax</span>
+            <AvatarLogo size="sm" />
+            <span className="font-garamond text-navy text-base tracking-wide">BlissPoint Access</span>
           </Link>
-          <button
-            onClick={() => {
-              localStorage.removeItem('user')
-              window.location.href = '/login'
-            }}
-            className="text-navy hover:text-gold"
-          >
+          <button onClick={logout} className="text-navy hover:text-gold">
             Sign Out
           </button>
         </div>
@@ -164,14 +151,14 @@ export default function TaxQuestionnaire() {
             <h1 className="font-garamond text-4xl font-medium text-navy mb-2">A Few Quick Basics First</h1>
             <p className="font-inter text-gray-600 mb-10">This helps us map your deductions to the right tax form.</p>
 
-            <div className="bg-white border border-lightgray rounded-lg p-8 mb-8">
+            <div className="bg-white border border-lightgray p-8 mb-8">
               <div className="mb-6">
                 <label className="font-inter text-sm font-medium text-navy block mb-2">Tax Year</label>
                 <input
                   type="number"
                   value={taxYear}
                   onChange={(e) => setTaxYear(parseInt(e.target.value))}
-                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                 />
               </div>
 
@@ -180,7 +167,7 @@ export default function TaxQuestionnaire() {
                 <select
                   value={entityType}
                   onChange={(e) => setEntityType(e.target.value)}
-                  className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                  className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                 >
                   <option value="SOLE_PROP">Sole Proprietor (Schedule C)</option>
                   <option value="S_CORP">S-Corporation (Form 1120-S)</option>
@@ -196,14 +183,14 @@ export default function TaxQuestionnaire() {
                     value={officerWages}
                     onChange={(e) => setOfficerWages(e.target.value)}
                     placeholder="50000"
-                    className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                    className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                   />
                 </div>
               )}
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm">
                 {error}
               </div>
             )}
@@ -211,7 +198,7 @@ export default function TaxQuestionnaire() {
             <button
               onClick={() => setStage('questions')}
               disabled={loadingQuestions || questions.length === 0}
-              className="w-full px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90 disabled:opacity-50"
+              className="w-full px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90 disabled:opacity-50"
             >
               {loadingQuestions ? 'Loading Questions...' : 'Start Walkthrough'}
             </button>
@@ -230,7 +217,7 @@ export default function TaxQuestionnaire() {
               />
             </div>
 
-            <div className="bg-white border border-lightgray rounded-lg p-8 mb-6">
+            <div className="bg-white border border-lightgray p-8 mb-6">
               <h2 className="font-garamond text-2xl text-navy mb-8">
                 {currentQuestion.question}
               </h2>
@@ -238,9 +225,9 @@ export default function TaxQuestionnaire() {
               <div className="flex gap-4 mb-6">
                 <button
                   onClick={handleYes}
-                  className={`flex-1 px-6 py-3 rounded font-medium border transition ${
+                  className={`flex-1 px-6 py-3 font-medium border transition ${
                     currentAnswer?.hasExpense
-                      ? 'bg-gold text-navy border-gold'
+                      ? 'bg-navy text-offwhite border-navy'
                       : 'border-lightgray text-navy hover:bg-offwhite'
                   }`}
                 >
@@ -248,7 +235,7 @@ export default function TaxQuestionnaire() {
                 </button>
                 <button
                   onClick={handleNo}
-                  className="flex-1 px-6 py-3 rounded font-medium border border-lightgray text-navy hover:bg-offwhite transition"
+                  className="flex-1 px-6 py-3 font-medium border border-lightgray text-navy hover:bg-offwhite transition"
                 >
                   No
                 </button>
@@ -266,14 +253,14 @@ export default function TaxQuestionnaire() {
                     value={currentAnswer.amount}
                     onChange={(e) => handleAmountChange(e.target.value)}
                     placeholder="0.00"
-                    className="w-full px-4 py-3 border border-lightgray rounded focus:outline-none focus:border-gold"
+                    className="w-full px-4 py-3 border border-lightgray focus:outline-none focus:border-gold"
                   />
                 </div>
               )}
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm">
                 {error}
               </div>
             )}
@@ -282,7 +269,7 @@ export default function TaxQuestionnaire() {
               {currentIndex > 0 && (
                 <button
                   onClick={goBack}
-                  className="px-6 py-3 border border-lightgray text-navy rounded font-medium hover:bg-offwhite"
+                  className="px-6 py-3 border border-lightgray text-navy font-medium hover:bg-offwhite"
                 >
                   Back
                 </button>
@@ -291,7 +278,7 @@ export default function TaxQuestionnaire() {
                 <button
                   onClick={advance}
                   disabled={!parseFloat(currentAnswer.amount) || submitting}
-                  className="flex-1 px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90 disabled:opacity-50"
+                  className="flex-1 px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90 disabled:opacity-50"
                 >
                   {submitting
                     ? 'Calculating...'
@@ -306,7 +293,7 @@ export default function TaxQuestionnaire() {
 
         {stage === 'results' && results && (
           <div className="max-w-6xl mx-auto space-y-8">
-            <div className="bg-white border border-gold rounded-lg p-8">
+            <div className="bg-white border border-gold p-8">
               <h2 className="font-garamond text-3xl text-navy font-bold mb-4">
                 Total Deductions: <span className="text-gold">${results.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </h2>
@@ -315,7 +302,7 @@ export default function TaxQuestionnaire() {
               </p>
             </div>
 
-            <div className="bg-white border border-lightgray rounded-lg p-8">
+            <div className="bg-white border border-lightgray p-8">
               <h3 className="font-garamond text-2xl text-navy font-medium mb-6">Form Line Breakdown</h3>
               <div className="space-y-4">
                 {Object.entries(results.lines).map(([formLine, data]) => (
@@ -335,12 +322,12 @@ export default function TaxQuestionnaire() {
             <div className="flex gap-4">
               <button
                 onClick={startOver}
-                className="flex-1 px-8 py-3 border border-lightgray text-navy rounded font-medium hover:bg-offwhite"
+                className="flex-1 px-8 py-3 border border-lightgray text-navy font-medium hover:bg-offwhite"
               >
                 Start Over
               </button>
               <Link href="/dashboard" className="flex-1">
-                <button className="w-full px-8 py-3 bg-gold text-navy rounded font-medium hover:bg-opacity-90">
+                <button className="w-full px-8 py-3 bg-navy text-offwhite hover:bg-opacity-90">
                   Back to Dashboard
                 </button>
               </Link>
