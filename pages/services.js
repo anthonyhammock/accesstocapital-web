@@ -53,6 +53,13 @@ const services = [
     href: '/register',
   },
   {
+    name: 'Trading Signals (Beta)',
+    price: 'Included',
+    description:
+      'Educational technical-analysis signals for stocks you watch, delivered as alerts — not investment advice, and you always execute manually on your own broker. Currently in beta.',
+    href: '/register',
+  },
+  {
     name: 'The Next Chapter',
     price: 'Coming soon',
     description:

@@ -65,6 +65,18 @@ const TOOL_CATEGORIES = [
         cta: 'Open Scheduling →'
       }
     ]
+  },
+  {
+    name: 'Markets',
+    tools: [
+      {
+        icon: '📈',
+        name: 'Trading Signals',
+        description: 'Educational technical-analysis signals for symbols you watch, delivered as alerts. Not investment advice — you always execute manually on your own broker.',
+        href: '/tools/trading-signals',
+        cta: 'Open Trading Signals →'
+      }
+    ]
   }
 ]
 
